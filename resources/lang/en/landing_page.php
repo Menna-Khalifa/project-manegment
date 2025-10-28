@@ -1,0 +1,82 @@
+<?php
+
+return [
+    // Landing Page Management
+    'landing_page_management' => 'Landing Page Management',
+    'landing_page_sections' => 'Landing Page Sections',
+    'add_new_section' => 'Add New Section',
+    'edit_section' => 'Edit Section',
+    'section_key' => 'Section Key',
+    'section_title' => 'Title',
+    'section_content' => 'Content',
+    'section_image' => 'Image',
+    'section_order' => 'Order',
+    'section_status' => 'Status',
+    'section_extra_data' => 'Extra Data',
+    'section_actions' => 'Actions',
+
+    // Form labels
+    'key' => 'Key',
+    'title_ar' => 'Title (Arabic)',
+    'title_en' => 'Title (English)',
+    'content_ar' => 'Content (Arabic)',
+    'content_en' => 'Content (English)',
+    'image' => 'Image',
+    'current_image' => 'Current Image',
+    'order' => 'Display Order',
+    'is_active' => 'Active Status',
+    'extra_data' => 'Extra Data',
+    'extra_data_info' => 'Enter additional data in JSON format',
+    'extra_data_item_key' => 'Item Key',
+    'extra_data_item_value_ar' => 'Item Value (Arabic)',
+    'extra_data_item_value_en' => 'Item Value (English)',
+    'extra_data_item_description_ar' => 'Item Description (Arabic)',
+    'extra_data_item_description_en' => 'Item Description (English)',
+    'extra_data_item_image' => 'Item Image',
+    'add_extra_data_item' => 'Add Item',
+    'remove_item' => 'Remove',
+
+    // Status
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+
+    // Buttons
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'back' => 'Back',
+    'edit' => 'Edit',
+    'activate' => 'Activate',
+    'deactivate' => 'Deactivate',
+    'delete' => 'Delete',
+
+    // Messages
+    'section_created_successfully' => 'Section created successfully',
+    'section_updated_successfully' => 'Section updated successfully',
+    'section_deleted_successfully' => 'Section deleted successfully',
+    'confirm_delete' => 'Are you sure you want to delete this section?',
+    'no_sections_found' => 'No sections found',
+    'drag_to_reorder' => 'Drag to reorder sections',
+
+    // Section Keys
+    'navbar' => 'Navbar',
+    'hero_section' => 'Hero Section',
+    'join_experts' => 'Join Experts Section',
+    'appointment_management' => 'Appointment Management Section',
+    'payment_retargeting' => 'Payment & Retargeting Sections',
+    'integrated_services' => 'Integrated Services Section',
+    'reports_employee' => 'Reports & Employee Schedules Sections',
+    'business_type' => 'Business Type Selection',
+    'testimonials' => 'Testimonials Section',
+    'hero_section_2' => 'Hero Section 2',
+    'dashboard_display' => 'Dashboard Display Section',
+    'features' => 'Features Section',
+    'employee_efficiency' => 'Employee Efficiency Section',
+    'payment_methods' => 'Payment Methods',
+    'control_anywhere' => 'Control Anywhere Section',
+    'trusted_by' => 'Trusted By Section',
+    'platform_support' => 'Platform Support Section',
+    'cta_main' => 'CTA Main Section',
+    'pricing_plans' => 'Pricing Plans Section',
+    'feature_comparison' => 'Feature Comparison Section',
+    'contact_form' => 'Contact Form Section',
+];

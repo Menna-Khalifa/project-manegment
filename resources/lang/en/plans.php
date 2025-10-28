@@ -1,0 +1,73 @@
+<?php
+
+return [
+    // Menus and Titles
+    'plans' => 'Plans',
+    'plans_list' => 'Plans List',
+    'add_plan' => 'Add Plan',
+    'edit_plan' => 'Edit Plan',
+    'show_plan' => 'Show Plan',
+    'delete_plan' => 'Delete Plan',
+    'back' => 'Back',
+    'sure' => 'Confirm',
+    'cancel' => 'Cancel',
+    'processes' => 'Processes',
+    'details' => 'Details',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'view' => 'View',
+    'status' => 'Status',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'change_status' => 'Change Status',
+    'active_status' => 'Activate',
+    'inactive_status' => 'Deactivate',
+    'no_features' => 'No features added',
+
+    // Form Fields
+    'name' => 'Plan Name',
+    'description' => 'Plan Description',
+    'price' => 'Plan Price',
+    'duration' => 'Plan Duration',
+    'features' => 'Plan Features',
+    'monthly_price' => 'Monthly Price',
+    'yearly_price' => 'Yearly Price',
+    'add_feature' => 'Add Feature',
+    'remove_feature' => 'Remove',
+    'feature' => 'Feature',
+    'monthly' => 'Monthly',
+    'yearly' => 'Yearly',
+    'is_active' => 'Plan Status',
+    'is_best_choice' => 'Best Choice',
+    'best_choice' => 'Best Choice',
+    'not_best_choice' => 'Not Best Choice',
+    'status_plan' => 'Change Plan Status',
+    'are_you_sure_status_plan' => 'Are you sure you want to change the status of this plan?',
+    'plan_has_subscriptions' => 'Cannot delete this plan because it is used in multiple subscriptions',
+
+    // Success Messages
+    'add_plan_success' => 'Plan has been added successfully',
+    'update_plan_success' => 'Plan has been updated successfully',
+    'delete_plan_success' => 'Plan has been deleted successfully',
+    'status_updated_success' => 'Plan status has been updated successfully',
+
+    // Error Messages
+    'add_plan_error' => 'An error occurred while adding the plan',
+    'update_plan_error' => 'An error occurred while updating the plan',
+    'delete_plan_error' => 'An error occurred while deleting the plan',
+    'plan_not_found' => 'Plan not found',
+    'list_plans_error' => 'An error occurred while displaying plans',
+    'status_updated_error' => 'An error occurred while updating plan status',
+    'are_you_sure_delete_plan' => 'Are you sure you want to delete this plan?',
+
+    // Validation Messages
+    'name_required' => 'Plan name is required',
+    'name_max' => 'Plan name must not exceed 255 characters',
+    'price_required' => 'Plan price is required',
+    'price_numeric' => 'Plan price must be a number',
+    'price_min' => 'Plan price must be 0 or greater',
+    'duration_required' => 'Plan duration is required',
+    'duration_in' => 'Plan duration must be monthly or yearly',
+    'features_array' => 'Plan features must be an array',
+    'features_max' => 'Feature must not exceed 255 characters',
+];

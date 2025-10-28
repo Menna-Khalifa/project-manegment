@@ -1,0 +1,82 @@
+<?php
+
+return [
+    // Landing Page Management
+    'landing_page_management' => 'إدارة الصفحة الرئيسية',
+    'landing_page_sections' => 'أقسام الصفحة الرئيسية',
+    'add_new_section' => 'إضافة قسم جديد',
+    'edit_section' => 'تعديل القسم',
+    'section_key' => 'مفتاح القسم',
+    'section_title' => 'العنوان',
+    'section_content' => 'المحتوى',
+    'section_image' => 'الصورة',
+    'section_order' => 'الترتيب',
+    'section_status' => 'الحالة',
+    'section_extra_data' => 'بيانات إضافية',
+    'section_actions' => 'الإجراءات',
+
+    // Form labels
+    'key' => 'المفتاح',
+    'title_ar' => 'العنوان (بالعربية)',
+    'title_en' => 'العنوان (بالإنجليزية)',
+    'content_ar' => 'المحتوى (بالعربية)',
+    'content_en' => 'المحتوى (بالإنجليزية)',
+    'image' => 'الصورة',
+    'current_image' => 'الصورة الحالية',
+    'order' => 'ترتيب العرض',
+    'is_active' => 'حالة النشاط',
+    'extra_data' => 'بيانات إضافية',
+    'extra_data_info' => 'أدخل بيانات إضافية بتنسيق JSON',
+    'extra_data_item_key' => 'مفتاح العنصر',
+    'extra_data_item_value_ar' => 'قيمة العنصر (بالعربية)',
+    'extra_data_item_value_en' => 'قيمة العنصر (بالإنجليزية)',
+    'extra_data_item_description_ar' => 'وصف العنصر (بالعربية)',
+    'extra_data_item_description_en' => 'وصف العنصر (بالإنجليزية)',
+    'extra_data_item_image' => 'صورة العنصر',
+    'add_extra_data_item' => 'إضافة عنصر',
+    'remove_item' => 'إزالة',
+
+    // Status
+    'active' => 'نشط',
+    'inactive' => 'غير نشط',
+
+    // Buttons
+    'save' => 'حفظ',
+    'cancel' => 'إلغاء',
+    'back' => 'رجوع',
+    'edit' => 'تعديل',
+    'activate' => 'تنشيط',
+    'deactivate' => 'إلغاء التنشيط',
+    'delete' => 'حذف',
+
+    // Messages
+    'section_created_successfully' => 'تم إنشاء القسم بنجاح',
+    'section_updated_successfully' => 'تم تحديث القسم بنجاح',
+    'section_deleted_successfully' => 'تم حذف القسم بنجاح',
+    'confirm_delete' => 'هل أنت متأكد من رغبتك في حذف هذا القسم؟',
+    'no_sections_found' => 'لا توجد أقسام',
+    'drag_to_reorder' => 'اسحب لإعادة ترتيب الأقسام',
+
+    // Section Keys
+    'navbar' => 'شريط التنقل',
+    'hero_section' => 'قسم البداية',
+    'join_experts' => 'قسم الانضمام للخبراء',
+    'appointment_management' => 'قسم إدارة المواعيد',
+    'payment_retargeting' => 'أقسام الدفع وإعادة الاستهداف',
+    'integrated_services' => 'قسم الخدمات المتكاملة',
+    'reports_employee' => 'أقسام التقارير وجداول الموظفين',
+    'business_type' => 'اختيار نوع العمل',
+    'testimonials' => 'قسم آراء العملاء',
+    'hero_section_2' => 'قسم البداية 2',
+    'dashboard_display' => 'قسم عرض لوحة التحكم',
+    'features' => 'قسم المميزات',
+    'employee_efficiency' => 'قسم كفاءة الموظفين',
+    'payment_methods' => 'طرق الدفع',
+    'control_anywhere' => 'قسم التحكم من أي مكان',
+    'trusted_by' => 'قسم موثوق به من قبل',
+    'platform_support' => 'قسم دعم المنصة',
+    'cta_main' => 'قسم دعوة للعمل الرئيسي',
+    'pricing_plans' => 'قسم خطط التسعير',
+    'feature_comparison' => 'قسم مقارنة المميزات',
+    'contact_form' => 'قسم نموذج الاتصال',
+];

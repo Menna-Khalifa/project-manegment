@@ -1,0 +1,73 @@
+<?php
+
+return [
+    // القوائم والعناوين
+    'plans' => 'الباقات',
+    'plans_list' => 'قائمة الباقات',
+    'show_plan' => 'عرض الباقة',
+    'add_plan' => 'إضافة باقة',
+    'edit_plan' => 'تعديل الباقة',
+    'delete_plan' => 'حذف الباقة',
+    'back' => 'رجوع',
+    'sure' => 'تأكيد',
+    'cancel' => 'إلغاء',
+    'processes' => 'العمليات',
+    'details' => 'التفاصيل',
+    'edit' => 'تعديل',
+    'delete' => 'حذف',
+    'view' => 'عرض',
+    'status' => 'الحالة',
+    'active' => 'مفعل',
+    'inactive' => 'غير مفعل',
+    'change_status' => 'تغيير الحالة',
+    'active_status' => 'تفعيل',
+    'inactive_status' => 'تعطيل',
+    'no_features' => 'لا توجد ميزات مضافة',
+
+    // حقول النموذج
+    'name' => 'اسم الباقة',
+    'description' => 'الوصف',
+    'price' => 'سعر الباقة',
+    'duration' => 'مدة الباقة',
+    'features' => 'مميزات الباقة',
+    'monthly_price' => 'سعر الشهر',
+    'yearly_price' => 'سعر السنة',
+    'add_feature' => 'إضافة ميزة',
+    'remove_feature' => 'إزالة',
+    'feature' => 'الميزة',
+    'monthly' => 'شهرية',
+    'yearly' => 'سنوية',
+    'is_active' => 'حالة الباقة',
+    'is_best_choice' => 'الباقة الأفضل',
+    'best_choice' => 'الباقة الأفضل',
+    'not_best_choice' => 'ليست الباقة الأفضل',
+    'status_plan' => 'تغيير حالة الباقة',
+    'are_you_sure_status_plan' => 'هل أنت متأكد من تغيير حالة هذه الباقة؟',
+    'plan_has_subscriptions' => 'لا يمكن حذف هذه الباقة لأنها مستخدمة في عدد من الاشتراكات',
+
+    // رسائل النجاح
+    'add_plan_success' => 'تم إضافة الباقة بنجاح',
+    'update_plan_success' => 'تم تحديث الباقة بنجاح',
+    'delete_plan_success' => 'تم حذف الباقة بنجاح',
+    'status_updated_success' => 'تم تحديث حالة الباقة بنجاح',
+
+    // رسائل الخطأ
+    'add_plan_error' => 'حدث خطأ أثناء إضافة الباقة',
+    'update_plan_error' => 'حدث خطأ أثناء تحديث الباقة',
+    'delete_plan_error' => 'حدث خطأ أثناء حذف الباقة',
+    'plan_not_found' => 'الباقة غير موجودة',
+    'list_plans_error' => 'حدث خطأ أثناء عرض الباقات',
+    'status_updated_error' => 'حدث خطأ أثناء تحديث حالة الباقة',
+    'are_you_sure_delete_plan' => 'هل أنت متأكد من حذف هذه الباقة؟',
+
+    // رسائل التحقق
+    'name_required' => 'اسم الباقة مطلوب',
+    'name_max' => 'اسم الباقة يجب أن لا يتجاوز 255 حرف',
+    'price_required' => 'سعر الباقة مطلوب',
+    'price_numeric' => 'سعر الباقة يجب أن يكون رقم',
+    'price_min' => 'سعر الباقة يجب أن يكون 0 أو أكبر',
+    'duration_required' => 'مدة الباقة مطلوبة',
+    'duration_in' => 'مدة الباقة يجب أن تكون شهرية أو سنوية',
+    'features_array' => 'مميزات الباقة يجب أن تكون مصفوفة',
+    'features_max' => 'الميزة يجب أن لا تتجاوز 255 حرف',
+];
