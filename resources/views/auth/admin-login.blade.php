@@ -28,7 +28,7 @@
                                 <div class="card-sigin">
                                     <div class="mb-5 mt-3 d-flex"> <a href="{{ route('dashboard') }}"><img
                                                 src="{{ URL::asset('dashboard/assets/img/brand/desktop-logo.png') }}"
-                                                class="sign-favicon ht-200" alt="logo"></a>
+                                                class="sign-favicon w-50" alt="logo"></a>
                                     </div>
                                     <div class="card-sigin">
                                         <div class="main-signup-header">

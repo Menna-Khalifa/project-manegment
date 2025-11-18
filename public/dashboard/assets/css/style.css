@@ -17693,7 +17693,7 @@ pre {
   display: flex;
   align-items: center;
   position: relative;
-  height: 2rem;
+  height: 3rem;
   margin: 0 auto;
   justify-content: center;
   text-align: center; }
@@ -19862,7 +19862,7 @@ object, embed, video {
   margin-left: 1px; }
 
 .desktop-logo {
-  height: 2rem;
+  /* height: 2rem; */
   text-align: center;
   margin: 0 auto;
   justify-content: center; }

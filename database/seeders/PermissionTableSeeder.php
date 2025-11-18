@@ -125,6 +125,18 @@ class PermissionTableSeeder extends Seeder
                 'delete_invoice',
                 'approve_invoice',
             ],
+            'brands' => [
+                'brands_list',
+                'add_brand',
+                'edit_brand',
+                'delete_brand',
+            ],
+            'stores' => [
+                'stores_list',
+                'add_store',
+                'edit_store',
+                'delete_store',
+            ],
         ];
 
         // إنشاء الفرق وأضف الصلاحيات المرتبطة بها

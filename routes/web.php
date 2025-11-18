@@ -1,24 +1,36 @@
 <?php
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AdminController;
-use App\Http\Controllers\Dashboard\GroupController;
-use App\Http\Controllers\Dashboard\RolesController;
-use App\Http\Controllers\Dashboard\TeamsController;
-use App\Http\Controllers\Dashboard\InvoiceController;
-use App\Http\Controllers\Dashboard\ProfileController;
-use App\Http\Controllers\Dashboard\ProjectController;
-use App\Http\Controllers\Dashboard\SectionsController;
+use App\Http\Controllers\Dashboard\BrandsController;
+use App\Http\Controllers\Dashboard\CompressorTypeController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EquipmentsController;
-use App\Http\Controllers\Dashboard\ProjectItemController;
-use App\Http\Controllers\Dashboard\ProjectTeamController;
+use App\Http\Controllers\Dashboard\GroupController;
+use App\Http\Controllers\Dashboard\InvoiceController;
 use App\Http\Controllers\Dashboard\NotificationController;
-use App\Http\Controllers\Dashboard\SectionItemsController;
-use App\Http\Controllers\Dashboard\ProjectInvoicesController;
+use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\ProjectAmerController;
+use App\Http\Controllers\Dashboard\ProjectCapacityController;
+use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\Dashboard\ProjectEquipmentController;
+use App\Http\Controllers\Dashboard\ProjectInvoicesController;
+use App\Http\Controllers\Dashboard\ProjectItemController;
+use App\Http\Controllers\Dashboard\ProjectModelController;
+use App\Http\Controllers\Dashboard\ProjectTeamController;
+use App\Http\Controllers\Dashboard\ProjectTypeController;
+use App\Http\Controllers\Dashboard\ProjectVoltController;
+use App\Http\Controllers\Dashboard\RolesController;
+use App\Http\Controllers\Dashboard\SectionItemsController;
+use App\Http\Controllers\Dashboard\SectionsController;
+use App\Http\Controllers\Dashboard\StoresController;
+use App\Http\Controllers\Dashboard\TeamsController;
+use App\Http\Controllers\Dashboard\UserController;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +42,11 @@ use App\Http\Controllers\Dashboard\ProjectEquipmentController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('view_report', function () {
+    return view('dashboard.report_pdf.invoices');
+});
 
 require __DIR__ . '/auth.php';
 
@@ -190,6 +207,86 @@ Route::group([
         Route::get('/{notification}/show', 'show')->name('notifications.show');
         Route::get('/mark-all-as-read', 'markAllAsRead')->name('notifications.markAllAsRead');
         Route::delete('/{notification}', 'destroy')->name('notifications.destroy');
+    });
+
+
+    // Brands routes
+    Route::prefix('brands')->controller(BrandsController::class)->group(function () {
+        Route::get('/index', 'index')->name('brands.index');
+        Route::get('/create', 'create')->name('brands.create');
+        Route::post('/store', 'store')->name('brands.store');
+        Route::get('{brand}/show', 'show')->name('brands.show');
+        Route::get('{brand}/edit', 'edit')->name('brands.edit');
+        Route::post('{brand}/update', 'update')->name('brands.update');
+        Route::post('{brand}/destroy', 'destroy')->name('brands.destroy');
+    });
+    
+    // stores routes
+    Route::prefix('stores')->controller(StoresController::class)->group(function () {
+        Route::get('/index', 'index')->name('stores.index');
+        Route::get('/create', 'create')->name('stores.create');
+        Route::post('/store', 'store')->name('stores.store');
+        Route::get('{store}/show', 'show')->name('stores.show');
+        Route::get('{store}/edit', 'edit')->name('stores.edit');
+        Route::post('{store}/update', 'update')->name('stores.update');
+        Route::post('{store}/destroy', 'destroy')->name('stores.destroy');
+    });
+
+    Route::prefix('project_amers')->controller(ProjectAmerController::class)->group(function () {
+        Route::get('/index', 'index')->name('project_amers.index');
+        Route::get('{project_amer}/show', 'show')->name('project_amers.show');
+        Route::get('/create', 'create')->name('project_amers.create');
+        Route::post('/store', 'store')->name('project_amers.store');
+        Route::get('{project_amer}/edit', 'edit')->name('project_amers.edit');
+        Route::post('{project_amer}/update', 'update')->name('project_amers.update');
+        Route::post('{project_amer}/destroy', 'destroy')->name('project_amers.destroy');
+        Route::get('{project_amer}/download-service-completion', 'downloadServiceCompletionPDF')->name('project_amers.download_service_completion');
+    });
+
+    // Project Types routes
+    Route::prefix('project_types')->controller(ProjectTypeController::class)->group(function () {
+        Route::get('/index', 'index')->name('project_types.index');
+        Route::get('/maintenance/index', 'maintenanceIndex')->name('maintenance_types.index');
+        Route::get('{type}/show', 'show')->name('project_types.show');
+        Route::get('/create', 'create')->name('project_types.create');
+        Route::get('/maintenance/create', 'maintenanceCreate')->name('maintenance_types.create');
+        Route::post('/store', 'store')->name('project_types.store');
+        Route::get('{type}/edit', 'edit')->name('project_types.edit');
+        Route::match(['post','put'],'{type}/update', 'update')->name('project_types.update');
+        Route::match(['post','delete'],'{type}/destroy', 'destroy')->name('project_types.destroy');
+    });
+
+    // Project Capacities routes
+    Route::prefix('project_capacities')->controller(ProjectCapacityController::class)->group(function () {
+        Route::get('/index', 'index')->name('project_capacities.index');
+        Route::get('{capacity}/show', 'show')->name('project_capacities.show');
+        Route::get('/create', 'create')->name('project_capacities.create');
+        Route::post('/store', 'store')->name('project_capacities.store');
+        Route::get('{capacity}/edit', 'edit')->name('project_capacities.edit');
+        Route::match(['post','put'],'{capacity}/update', 'update')->name('project_capacities.update');
+        Route::match(['post','delete'],'{capacity}/destroy', 'destroy')->name('project_capacities.destroy');
+    });
+
+    // Project Volts routes
+    Route::prefix('project_volts')->controller(ProjectVoltController::class)->group(function () {
+        Route::get('/index', 'index')->name('project_volts.index');
+        Route::get('{volt}/show', 'show')->name('project_volts.show');
+        Route::get('/create', 'create')->name('project_volts.create');
+        Route::post('/store', 'store')->name('project_volts.store');
+        Route::get('{volt}/edit', 'edit')->name('project_volts.edit');
+        Route::match(['post','put'],'{volt}/update', 'update')->name('project_volts.update');
+        Route::match(['post','delete'],'{volt}/destroy', 'destroy')->name('project_volts.destroy');
+    });
+
+    // Project Models routes
+    Route::prefix('project_models')->controller(ProjectModelController::class)->group(function () {
+        Route::get('/index', 'index')->name('project_models.index');
+        Route::get('{model}/show', 'show')->name('project_models.show');
+        Route::get('/create', 'create')->name('project_models.create');
+        Route::post('/store', 'store')->name('project_models.store');
+        Route::get('{model}/edit', 'edit')->name('project_models.edit');
+        Route::match(['post','put'],'{model}/update', 'update')->name('project_models.update');
+        Route::match(['post','delete'],'{model}/destroy', 'destroy')->name('project_models.destroy');
     });
 
     // Route to fetch chart data
