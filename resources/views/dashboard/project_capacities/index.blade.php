@@ -17,6 +17,7 @@
     <div class="row row-sm">
         <div class="col-xl-12">
             <div class="card">
+                @can('add_project_capacity')
                 <div class="card-header pb-0">
                     <div class="col-sm-1 col-md-2">
                         <a class="btn btn-primary" href="{{ route('project_capacities.create') }}">
@@ -24,6 +25,7 @@
                             Add Capacity</a>
                     </div>
                 </div>
+                @endcan
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table key-buttons text-md-nowrap" id="example1">
@@ -42,8 +44,12 @@
                                             {{ $capacity->name }}
                                         </td>
                                         <td>
+                                            @can('edit_project_capacity')
                                             <a class="btn btn-sm btn-primary" href="{{ route('project_capacities.edit', $capacity->id) }}">Edit</a>
+                                            @endcan
+                                            @can('delete_project_capacity')
                                             <a class="btn btn-sm btn-danger modal-effect" data-effect="effect-scale" data-toggle="modal" href="#delete-capacity-{{ $capacity->id }}">Delete</a>
+                                            @endcan
                                         </td>
                                     </tr>
                                     <div class="modal" id="delete-capacity-{{ $capacity->id }}">

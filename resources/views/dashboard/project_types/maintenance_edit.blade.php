@@ -6,7 +6,7 @@
 
 @section('page-header')
     <li class="breadcrumb-item" style="font-size: 1rem !important;">
-        <a href="{{ route('project_types.index') }}">Project Types</a>
+        <a href="{{ route('maintenance_types.index') }}">Maintenance Types</a>
     </li>
     <li class="breadcrumb-item active" style="font-size: 1rem !important;">
         Edit Type
@@ -21,7 +21,7 @@
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title mg-b-0">Edit: {{ $type->name }}</h4>
                         <div>
-                            <a class="btn btn-secondary" href="{{ route('project_types.index') }}">
+                            <a class="btn btn-secondary" href="{{ route('maintenance_types.index') }}">
                                 <i class="las la-arrow-left"></i> Back
                             </a>
                         </div>

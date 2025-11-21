@@ -66,4 +66,9 @@ class ProjectAmer extends Model
     {
         return $this->hasMany(ProjectAmerItem::class);
     }
+    
+    public function invoice()
+    {
+        return $this->HasOne(InvoiceAmer::class);
+    }
 }

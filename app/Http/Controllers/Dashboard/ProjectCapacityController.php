@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectCapacityController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('check.permission:project_capacities_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_project_capacity', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:edit_project_capacity', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_project_capacity', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         try {

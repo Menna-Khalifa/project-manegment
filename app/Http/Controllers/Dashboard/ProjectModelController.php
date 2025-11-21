@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectModelController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('check.permission:project_models_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_project_model', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:edit_project_model', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_project_model', ['only' => ['destroy']]);
+    }
+    
     public function index(Request $request)
     {
         try {

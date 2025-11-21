@@ -20,14 +20,15 @@ use Illuminate\Support\Facades\Storage;
 class ProjectAmerController extends Controller
 {
 
-    // function __construct()
-    // {
-    //     $this->middleware('check.permission:projects_list', ['only' => ['index']]);
-    //     $this->middleware('check.permission:add_project', ['only' => ['create', 'store']]);
-    //     $this->middleware('check.permission:show_project', ['only' => ['show']]);
-    //     $this->middleware('check.permission:edit_project', ['only' => ['edit', 'update']]);
-    //     $this->middleware('check.permission:delete_project', ['only' => ['destroy']]);
-    // }
+    function __construct()
+    {
+        $this->middleware('check.permission:project_amers_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_project_amers', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:show_project_amers', ['only' => ['show']]);
+        $this->middleware('check.permission:edit_project_amers', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_project_amers', ['only' => ['destroy']]);
+        $this->middleware('check.permission:download_project_amers', ['only' => ['downloadServiceCompletionPDF']]);
+    }
     /**
      * Display a listing of the resource.
      */

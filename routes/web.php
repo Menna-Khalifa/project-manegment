@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EquipmentsController;
 use App\Http\Controllers\Dashboard\GroupController;
 use App\Http\Controllers\Dashboard\InvoiceController;
+use App\Http\Controllers\Dashboard\InvoicesAmerController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProjectAmerController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Dashboard\TeamsController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -252,6 +254,7 @@ Route::group([
         Route::get('/maintenance/create', 'maintenanceCreate')->name('maintenance_types.create');
         Route::post('/store', 'store')->name('project_types.store');
         Route::get('{type}/edit', 'edit')->name('project_types.edit');
+        Route::get('/maintenance/{type}/edit', 'maintenanceEdit')->name('maintenance_types.edit');
         Route::match(['post','put'],'{type}/update', 'update')->name('project_types.update');
         Route::match(['post','delete'],'{type}/destroy', 'destroy')->name('project_types.destroy');
     });
@@ -287,6 +290,19 @@ Route::group([
         Route::get('{model}/edit', 'edit')->name('project_models.edit');
         Route::match(['post','put'],'{model}/update', 'update')->name('project_models.update');
         Route::match(['post','delete'],'{model}/destroy', 'destroy')->name('project_models.destroy');
+    });
+
+     // Invoices Amer routes
+    Route::prefix('invoices_amer')->controller(InvoicesAmerController::class)->group(function () {
+        Route::get('/index', 'index')->name('invoices_amer.index');
+        Route::get('/create', 'create')->name('invoices_amer.create');
+        Route::post('/store', 'store')->name('invoices_amer.store');
+        Route::get('{invoice_amer}/show', 'show')->name('invoices_amer.show');
+        Route::get('{invoice_amer}/edit', 'edit')->name('invoices_amer.edit');
+        Route::post('{invoice_amer}/update', 'update')->name('invoices_amer.update');
+        Route::post('{invoice_amer}/destroy', 'destroy')->name('invoices_amer.destroy');
+        Route::post('{invoice_amer}/approve', 'approve')->name('invoices_amer.approve');
+        Route::post('{invoice_amer}/reject', 'reject')->name('invoices_amer.reject');
     });
 
     // Route to fetch chart data

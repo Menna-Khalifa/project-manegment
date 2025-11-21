@@ -49,7 +49,15 @@
             </li>
 
             <!-- إدارة مشاريع امريكانا -->
-            @if (auth()->user()->can('brands_list') || auth()->user()->can('stores_list'))
+            @if (auth()->user()->can('brands_list') ||
+                    auth()->user()->can('stores_list') ||
+                    auth()->user()->can('project_types_list') ||
+                    auth()->user()->can('project_capacities_list') ||
+                    auth()->user()->can('project_volts_list') ||
+                    auth()->user()->can('project_type_maintenances_list') ||
+                    auth()->user()->can('project_models_list') ||
+                    auth()->user()->can('project_amers_list') ||
+                    auth()->user()->can('invoices_amer_list'))
                 <li class="side-item side-item-category">Americana Management</li>
 
                 @can('brands_list')
@@ -74,55 +82,84 @@
                     </li>
                 @endcan
 
-                <li class="slide">
-                    <a class="side-menu__item d-flex justify-content-between align-items-baseline" data-toggle="slide"
-                        href="{{ url('/' . ($page = '#')) }}">
-                        <i class="fas fa-drafting-compass side-menu__icon"
-                            style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
-                        <span class="side-menu__label">Items Projects</span>
-                        <i class="angle fe fe-chevron-down"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li>
-                            <a class="slide-item" href="{{ route('project_types.index') }}">Projects Type List</a>
-                        </li>
-                        <li>
-                            <a class="slide-item" href="{{ route('project_capacities.index') }}">Capacities List</a>
-                        </li>
-                        <li>
-                            <a class="slide-item" href="{{ route('project_volts.index') }}">Volts List</a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="slide">
-                    <a class="side-menu__item d-flex justify-content-between align-items-baseline" data-toggle="slide"
-                        href="{{ url('/' . ($page = '#')) }}">
-                        <i class="fas fa-bolt side-menu__icon"
-                            style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
-                        <span class="side-menu__label">Items Compressors</span>
-                        <i class="angle fe fe-chevron-down"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li>
-                            <a class="slide-item" href="{{ route('maintenance_types.index') }}">Maintenance Type List</a>
-                        </li>
-                        <li>
-                            <a class="slide-item" href="{{ route('project_models.index') }}">Models List</a>
-                        </li>
-                    </ul>
-                </li>
+                @if (auth()->user()->can('project_types_list') ||
+                        auth()->user()->can('project_capacities_list') ||
+                        auth()->user()->can('project_volts_list'))
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            data-toggle="slide" href="{{ url('/' . ($page = '#')) }}">
+                            <i class="fas fa-drafting-compass side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Items Projects</span>
+                            <i class="angle fe fe-chevron-down"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            @can('project_types_list')
+                                <li>
+                                    <a class="slide-item" href="{{ route('project_types.index') }}">Projects Type List</a>
+                                </li>
+                            @endcan
+                            @can('project_capacities_list')
+                                <li>
+                                    <a class="slide-item" href="{{ route('project_capacities.index') }}">Capacities
+                                        List</a>
+                                </li>
+                            @endcan
+                            @can('project_volts_list')
+                                <li>
+                                    <a class="slide-item" href="{{ route('project_volts.index') }}">Volts List</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
 
-                {{-- @can('project_amers_list') --}}
-                <li class="slide">
-                    <a class="side-menu__item d-flex justify-content-between align-items-baseline"
-                        href="{{ route('project_amers.index') }}">
-                        <i class="fas fa-building side-menu__icon"
-                            style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
-                        <span class="side-menu__label">Projects</span>
-                    </a>
-                </li>
-                {{-- @endcan --}}
+                @if (auth()->user()->can('project_type_maintenances_list') || auth()->user()->can('project_models_list'))
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            data-toggle="slide" href="{{ url('/' . ($page = '#')) }}">
+                            <i class="fas fa-bolt side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Items Compressors</span>
+                            <i class="angle fe fe-chevron-down"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            @can('project_type_maintenances_list')
+                                <li>
+                                    <a class="slide-item" href="{{ route('maintenance_types.index') }}">Maintenance Type
+                                        List</a>
+                                </li>
+                            @endcan
+                            @can('project_models_list')
+                                <li>
+                                    <a class="slide-item" href="{{ route('project_models.index') }}">Models List</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+
+                @can('project_amers_list')
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            href="{{ route('project_amers.index') }}">
+                            <i class="fas fa-building side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Projects</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('invoices_amer_list')
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            href="{{ route('invoices_amer.index') }}">
+                            <i class="fas fa-file side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Invoices</span>
+                        </a>
+                    </li>
+                @endcan
             @endif
 
             <!-- إدارة المشاريع -->

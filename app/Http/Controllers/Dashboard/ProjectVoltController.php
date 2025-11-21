@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectVoltController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('check.permission:project_volts_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_project_volt', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:edit_project_volt', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_project_volt', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         try {

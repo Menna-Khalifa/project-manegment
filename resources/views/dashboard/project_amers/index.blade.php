@@ -115,7 +115,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="col-sm-1 col-md-2">
-                        @can('add_project')
+                        @can('add_project_amers')
                             <a class="btn btn-primary" href="{{ route('project_amers.create') }}">
                                 <i class="las la-plus"></i>
                                 Add ProjectAmer</a>
@@ -148,7 +148,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            @can('show_project')
+                                            @can('show_project_amers')
                                                 <a href="{{ route('project_amers.show', $project->id) }}">
                                                     {{ $project->po_num ?? __('general.not_found') }}
                                                 </a>
@@ -203,7 +203,7 @@
                                         </td>
 
 
-                                        @if (auth()->user()->can('edit_project') || auth()->user()->can('show_project') || auth()->user()->can('delete_project'))
+                                        @if (auth()->user()->can('edit_project_amers') || auth()->user()->can('show_project_amers') || auth()->user()->can('delete_project_amers'))
                                             <td>
                                                 <div class="dropdown">
                                                     <button aria-expanded="false" aria-haspopup="true"
@@ -211,23 +211,25 @@
                                                         type="button">Processes&nbsp;&nbsp;<i
                                                             class="fas fa-caret-down ml-1"></i></button>
                                                     <div class="dropdown-menu tx-13">
+                                                        @can('download_project_amers')
                                                         <a href="{{ route('project_amers.download_service_completion', $project->id) }}"
                                                             class="dropdown-item">
                                                             <i class="text-warning fa fa-download"></i>&nbsp;&nbsp; تحميل Service Completion
                                                         </a>
-                                                        @can('show_project')
+                                                        @endcan
+                                                        @can('show_project_amers')
                                                             <a class="dropdown-item"
                                                                 href="{{ route('project_amers.show', $project->id) }}">
                                                                 <i class="text-info fas fa-eye"></i>&nbsp;&nbsp;View
                                                             </a>
                                                         @endcan
-                                                        @can('edit_project')
+                                                        @can('edit_project_amers')
                                                             <a class="dropdown-item"
                                                                 href="{{ route('project_amers.edit', $project->id) }}">
                                                                 <i class="text-primary fas fa-edit"></i>&nbsp;&nbsp;Edit
                                                             </a>
                                                         @endcan
-                                                        @can('delete_project')
+                                                        @can('delete_project_amers')
                                                             <a class="dropdown-item modal-effect" data-effect="effect-scale"
                                                                 data-toggle="modal" href="#modaldemo8-{{ $project->id }}"
                                                                 title="Delete Project">

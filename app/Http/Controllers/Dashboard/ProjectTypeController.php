@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectTypeController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('check.permission:project_types_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_project_type', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:edit_project_type', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_project_type', ['only' => ['destroy']]);
+        
+        $this->middleware('check.permission:project_type_maintenances_list', ['only' => ['maintenanceIndex']]);
+        $this->middleware('check.permission:add_project_type_maintenance', ['only' => ['maintenanceCreate', 'store']]);
+        $this->middleware('check.permission:edit_project_type_maintenance', ['only' => ['maintenanceEdit', 'update']]);
+        $this->middleware('check.permission:delete_project_type_maintenance', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
         try {
@@ -80,6 +94,17 @@ class ProjectTypeController extends Controller
     {
         try {
             return view('dashboard.project_types.edit', compact('type'));
+        } catch (\Exception $e) {
+            Log::error('Error loading project type edit form: ' . $e->getMessage());
+            notify('An error occurred during the editing.', 'error');
+            return back();
+        }
+    }
+
+    public function maintenanceEdit(ProjectType $type)
+    {
+        try {
+            return view('dashboard.project_types.maintenance_edit', compact('type'));
         } catch (\Exception $e) {
             Log::error('Error loading project type edit form: ' . $e->getMessage());
             notify('An error occurred during the editing.', 'error');

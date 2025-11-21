@@ -24,9 +24,11 @@
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title mg-b-0">Edit ProjectAmer: {{ $project_amer->po_num }}</h4>
                         <div>
+                            @can('show_project_amers')
                             <a class="btn btn-info" href="{{ route('project_amers.show', $project_amer->id) }}">
                                 <i class="las la-eye"></i> View Project
                             </a>
+                            @endcan
                             <a class="btn btn-secondary" href="{{ route('project_amers.index') }}">
                                 <i class="las la-arrow-left"></i> Back to Projects
                             </a>
@@ -36,7 +38,6 @@
                 <div class="card-body">
                     <form action="{{ route('project_amers.update', $project_amer->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -321,9 +322,11 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="las la-save"></i> Update ProjectAmer
                             </button>
+                            @can('show_project_amers')
                             <a href="{{ route('project_amers.show', $project_amer->id) }}" class="btn btn-info">
                                 <i class="las la-eye"></i> View Project
                             </a>
+                            @endcan
                             <a href="{{ route('project_amers.index') }}" class="btn btn-secondary">
                                 <i class="las la-times"></i> Cancel
                             </a>

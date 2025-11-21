@@ -137,6 +137,52 @@ class PermissionTableSeeder extends Seeder
                 'edit_store',
                 'delete_store',
             ],
+            'project_amers' => [
+                'project_amers_list',
+                'add_project_amers',
+                'show_project_amers',
+                'edit_project_amers',
+                'delete_project_amers',
+                'download_project_amers',
+            ],
+            'project_types' => [
+                'project_types_list',
+                'add_project_type',
+                'edit_project_type',
+                'delete_project_type',
+            ],
+            'project_type_maintenances' => [
+                'project_type_maintenances_list',
+                'add_project_type_maintenance',
+                'edit_project_type_maintenance',
+                'delete_project_type_maintenance',
+            ],
+            'project_capacities' => [
+                'project_capacities_list',
+                'add_project_capacity',
+                'edit_project_capacity',
+                'delete_project_capacity',
+            ],
+            'project_volts' => [
+                'project_volts_list',
+                'add_project_volt',
+                'edit_project_volt',
+                'delete_project_volt',
+            ],
+            'project_models' => [
+                'project_models_list',
+                'add_project_model',
+                'edit_project_model',
+                'delete_project_model',
+            ],
+            'invoices_amer' => [
+                'invoices_amer_list',
+                'add_invoice_amer',
+                'edit_invoice_amer',
+                'show_invoice_amer',
+                'approve_invoice_amer',
+                'delete_invoice_amer',
+            ],
         ];
 
         // إنشاء الفرق وأضف الصلاحيات المرتبطة بها

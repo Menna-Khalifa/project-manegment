@@ -22,7 +22,7 @@
                 <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>ProjectAmer Information</h5>
                     <div class="btn-group">
-                        @can('edit_project')
+                        @can('edit_project_amers')
                             <a href="{{ route('project_amers.edit', $project_amer->id) }}" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
@@ -30,6 +30,13 @@
                         <a href="{{ route('project_amers.index') }}" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
+                        @can('show_invoice_amer')
+                        @if($project_amer->invoice)
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#invoiceModal{{ $project_amer->invoice->id }}">
+                                <i class="las la-file-invoice"></i> View Invoice
+                            </button>
+                        @endif
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -212,12 +219,11 @@
         </div>
     @endif
     <!-- Invoice Modals -->
-    {{-- @foreach ($project_amer->invoices as $invoice)
-        <div class="modal fade" id="invoiceModal{{ $invoice->id }}" tabindex="-1">
+        <div class="modal fade" id="invoiceModal{{ $project_amer->invoice->id }}" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Invoice Details - {{ $invoice->invoice_number }}</h5>
+                        <h5 class="modal-title">Invoice Details - {{ $project_amer->invoice->invoice_number }}</h5>
                         <button type="button" class="btn-close" data-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -225,49 +231,79 @@
                             <div class="col-md-6">
                                 <div class="info-group">
                                     <label class="info-label">Invoice Number</label>
-                                    <div class="info-value">{{ $invoice->invoice_number }}</div>
+                                    <div class="info-value">{{ $project_amer->invoice->invoice_number }}</div>
                                 </div>
                                 <div class="info-group">
                                     <label class="info-label">Amount</label>
-                                    <div class="info-value text-success">{{ number_format($invoice->amount) }} SAR</div>
+                                    <div class="info-value text-success">{{ number_format($project_amer->invoice->amount, 2) }} SAR</div>
                                 </div>
                                 <div class="info-group">
                                     <label class="info-label">Status</label>
                                     <div class="info-value">
-                                        <span class="badge badge-{{ $statusColors[$invoice->status] }}">
-                                            {{ ucfirst($invoice->status) }}
-                                        </span>
+                                        @php $status = $project_amer->invoice->status; @endphp
+                                        @if ($status === 'pending')
+                                            <span class="badge badge-warning">Pending</span>
+                                        @elseif ($status === 'submitted')
+                                            <span class="badge badge-info">Submitted</span>
+                                        @elseif ($status === 'paid')
+                                            <span class="badge badge-success">Paid</span>
+                                        @elseif ($status === 'ready_of_invoicing')
+                                            <span class="badge badge-primary">Ready Of Invoicing</span>
+                                        @elseif ($status === 'invoice_issuse')
+                                            <span class="badge badge-dark">Invoice Issue</span>
+                                        @elseif ($status === 'canceled')
+                                            <span class="badge badge-danger">Canceled</span>
+                                        @else
+                                            <span class="badge badge-secondary">{{ ucfirst(str_replace('_',' ', $status)) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="info-group">
+                                    <label class="info-label">Extras</label>
+                                    <div class="info-value">
+                                        Crane: {{ $project_amer->invoice->crane ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_crane }}) |
+                                        Capper Pipe: {{ $project_amer->invoice->capper_pipe ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_capper_pipe }}) |
+                                        Power Cable: {{ $project_amer->invoice->power_cable ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_power_cable }})
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info-group">
                                     <label class="info-label">Created Date</label>
-                                    <div class="info-value">{{ $invoice->created_at->format('M d, Y H:i') }}</div>
+                                    <div class="info-value">{{ $project_amer->invoice->created_at->format('M d, Y H:i') }}</div>
                                 </div>
-                                @if ($invoice->approved_by)
+                                @if ($project_amer->invoice->approved_by)
                                     <div class="info-group">
                                         <label class="info-label">Approved By</label>
-                                        <div class="info-value">{{ $invoice->approvedBy->name }}</div>
+                                        <div class="info-value">{{ $project_amer->invoice->approvedBy->name }}</div>
                                     </div>
                                     <div class="info-group">
                                         <label class="info-label">Approved Date</label>
-                                        <div class="info-value">{{ $invoice->approved_at->format('M d, Y H:i') }}</div>
+                                        <div class="info-value">{{ $project_amer->invoice->approved_at?->format('M d, Y H:i') }}</div>
+                                    </div>
+                                @endif
+                                @if ($project_amer->invoice->payment_file)
+                                    <div class="info-group">
+                                        <label class="info-label">Payment File</label>
+                                        <div class="info-value">
+                                            <a href="{{ asset('storage/' . $project_amer->invoice->payment_file) }}" target="_blank" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i> View File
+                                            </a>
+                                        </div>
                                     </div>
                                 @endif
                             </div>
                         </div>
-                        @if ($invoice->notes)
+                        @if ($project_amer->invoice->notes)
                             <div class="info-group">
                                 <label class="info-label">Notes</label>
-                                <div class="info-value">{{ $invoice->notes }}</div>
+                                <div class="info-value">{{ $project_amer->invoice->notes }}</div>
                             </div>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach --}}
 @endsection
 
 @section('css')

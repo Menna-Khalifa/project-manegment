@@ -17,6 +17,7 @@
     <div class="row row-sm">
         <div class="col-xl-12">
             <div class="card">
+                @can('add_project_type')
                 <div class="card-header pb-0">
                     <div class="col-sm-1 col-md-2">
                         <a class="btn btn-primary" href="{{ route('project_types.create') }}">
@@ -24,6 +25,7 @@
                             Add Type</a>
                     </div>
                 </div>
+                @endcan
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table key-buttons text-md-nowrap" id="example1">
@@ -44,8 +46,12 @@
                                         </td>
                                         <td>{{ Str::limit($type->description, 60) }}</td>
                                         <td>
+                                            @can('edit_project_type')
                                             <a class="btn btn-sm btn-primary" href="{{ route('project_types.edit', $type->id) }}">Edit</a>
+                                            @endcan
+                                            @can('delete_project_type')
                                             <a class="btn btn-sm btn-danger modal-effect" data-effect="effect-scale" data-toggle="modal" href="#delete-type-{{ $type->id }}">Delete</a>
+                                            @endcan
                                         </td>
                                     </tr>
                                     <div class="modal" id="delete-type-{{ $type->id }}">
