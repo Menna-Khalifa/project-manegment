@@ -27,7 +27,7 @@ class PermissionTableSeeder extends Seeder
         DB::table('role_has_permissions')->delete();
         DB::table('model_has_permissions')->delete();
         DB::table('roles')->delete();
-        DB::table(table: 'model_has_roles')->delete();
+        DB::table('model_has_roles')->delete();
         DB::table('teams')->delete(); // حذف الفرق إذا كانت موجودة
 
         // إعادة تفعيل قيود المفاتيح الخارجية

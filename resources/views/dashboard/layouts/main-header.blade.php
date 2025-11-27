@@ -149,7 +149,7 @@
                                             class="">
                                     @endif
                                 </div>
-                                <div class="mr-3 my-auto">
+                                <div class="ml-3 my-auto">
                                     <h6>{{ Auth::user()->name }}</h6><span>{{ Auth::user()->email }}</span>
                                 </div>
                             </div>
