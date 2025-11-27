@@ -20,17 +20,16 @@ use App\Http\Controllers\Dashboard\ProjectModelController;
 use App\Http\Controllers\Dashboard\ProjectTeamController;
 use App\Http\Controllers\Dashboard\ProjectTypeController;
 use App\Http\Controllers\Dashboard\ProjectVoltController;
+use App\Http\Controllers\Dashboard\ReportController;
 use App\Http\Controllers\Dashboard\RolesController;
 use App\Http\Controllers\Dashboard\SectionItemsController;
 use App\Http\Controllers\Dashboard\SectionsController;
 use App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\Dashboard\TeamsController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\DashboardAmerController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-
-
-
 
 
 
@@ -191,7 +190,7 @@ Route::group([
         Route::get('available-equipment/{project_id?}', 'getAvailableEquipment')->name('project-equipments.available-equipment');
     });
 
-     // Invoices routes
+    // Invoices routes
     Route::prefix('invoices')->controller(ProjectInvoicesController::class)->group(function () {
         Route::get('/index', 'index')->name('invoices.index');
         Route::get('/create', 'create')->name('invoices.create');
@@ -211,6 +210,11 @@ Route::group([
         Route::delete('/{notification}', 'destroy')->name('notifications.destroy');
     });
 
+    // Dashboard Project Americana
+    Route::get('/dashboard_amer', [DashboardAmerController::class, 'index'])->name('dashboard_amer');
+    
+    // Optional: API endpoint للحصول على البيانات بصيغة JSON
+    Route::get('/dashboard_amer/stats', [DashboardAmerController::class, 'getStats'])->name('dashboard_amer.stats');
 
     // Brands routes
     Route::prefix('brands')->controller(BrandsController::class)->group(function () {
@@ -222,7 +226,7 @@ Route::group([
         Route::post('{brand}/update', 'update')->name('brands.update');
         Route::post('{brand}/destroy', 'destroy')->name('brands.destroy');
     });
-    
+
     // stores routes
     Route::prefix('stores')->controller(StoresController::class)->group(function () {
         Route::get('/index', 'index')->name('stores.index');
@@ -255,8 +259,8 @@ Route::group([
         Route::post('/store', 'store')->name('project_types.store');
         Route::get('{type}/edit', 'edit')->name('project_types.edit');
         Route::get('/maintenance/{type}/edit', 'maintenanceEdit')->name('maintenance_types.edit');
-        Route::match(['post','put'],'{type}/update', 'update')->name('project_types.update');
-        Route::match(['post','delete'],'{type}/destroy', 'destroy')->name('project_types.destroy');
+        Route::match(['post', 'put'], '{type}/update', 'update')->name('project_types.update');
+        Route::match(['post', 'delete'], '{type}/destroy', 'destroy')->name('project_types.destroy');
     });
 
     // Project Capacities routes
@@ -266,8 +270,8 @@ Route::group([
         Route::get('/create', 'create')->name('project_capacities.create');
         Route::post('/store', 'store')->name('project_capacities.store');
         Route::get('{capacity}/edit', 'edit')->name('project_capacities.edit');
-        Route::match(['post','put'],'{capacity}/update', 'update')->name('project_capacities.update');
-        Route::match(['post','delete'],'{capacity}/destroy', 'destroy')->name('project_capacities.destroy');
+        Route::match(['post', 'put'], '{capacity}/update', 'update')->name('project_capacities.update');
+        Route::match(['post', 'delete'], '{capacity}/destroy', 'destroy')->name('project_capacities.destroy');
     });
 
     // Project Volts routes
@@ -277,8 +281,8 @@ Route::group([
         Route::get('/create', 'create')->name('project_volts.create');
         Route::post('/store', 'store')->name('project_volts.store');
         Route::get('{volt}/edit', 'edit')->name('project_volts.edit');
-        Route::match(['post','put'],'{volt}/update', 'update')->name('project_volts.update');
-        Route::match(['post','delete'],'{volt}/destroy', 'destroy')->name('project_volts.destroy');
+        Route::match(['post', 'put'], '{volt}/update', 'update')->name('project_volts.update');
+        Route::match(['post', 'delete'], '{volt}/destroy', 'destroy')->name('project_volts.destroy');
     });
 
     // Project Models routes
@@ -288,11 +292,11 @@ Route::group([
         Route::get('/create', 'create')->name('project_models.create');
         Route::post('/store', 'store')->name('project_models.store');
         Route::get('{model}/edit', 'edit')->name('project_models.edit');
-        Route::match(['post','put'],'{model}/update', 'update')->name('project_models.update');
-        Route::match(['post','delete'],'{model}/destroy', 'destroy')->name('project_models.destroy');
+        Route::match(['post', 'put'], '{model}/update', 'update')->name('project_models.update');
+        Route::match(['post', 'delete'], '{model}/destroy', 'destroy')->name('project_models.destroy');
     });
 
-     // Invoices Amer routes
+    // Invoices Amer routes
     Route::prefix('invoices_amer')->controller(InvoicesAmerController::class)->group(function () {
         Route::get('/index', 'index')->name('invoices_amer.index');
         Route::get('/create', 'create')->name('invoices_amer.create');
@@ -303,6 +307,25 @@ Route::group([
         Route::post('{invoice_amer}/destroy', 'destroy')->name('invoices_amer.destroy');
         Route::post('{invoice_amer}/approve', 'approve')->name('invoices_amer.approve');
         Route::post('{invoice_amer}/reject', 'reject')->name('invoices_amer.reject');
+        Route::post('{invoice_amer}/update-status', 'updateStatus')->name('invoices_amer.update-status');
+    });
+
+    // Reports Routes
+    Route::controller(ReportController::class)->prefix('reports')->name('reports.')->group(function () {
+        Route::get('/index', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+
+        Route::get('/get-report-type-data', 'getReportTypeData')->name('getReportTypeData'); // هنا
+        Route::get('/get-project-store',  'getProjectStore')->name('getProjectStore');
+        Route::get('/get-project-items', 'getProjectItems')->name('getProjectItems');
+        
+        Route::get('{report}', 'show')->name('show');
+        Route::get('{report}/edit', 'edit')->name('edit');
+        Route::put('{report}/update', 'update')->name('update');
+        Route::delete('{report}/destroy', 'destroy')->name('destroy');
+        Route::get('{report}/download-pdf', 'downloadPdf')->name('download-pdf');
+        Route::delete('{report}/delete-image', 'deleteImage')->name('delete-image');
     });
 
     // Route to fetch chart data

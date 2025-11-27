@@ -20,7 +20,7 @@ class InvoicesAmerController extends Controller
         $this->middleware('check.permission:add_invoice_amer', ['only' => ['create', 'store']]);
         $this->middleware('check.permission:edit_invoice_amer', ['only' => ['edit', 'update']]);
         $this->middleware('check.permission:show_invoice_amer', ['only' => ['show']]);
-        $this->middleware('check.permission:approve_invoice_amer', ['only' => ['approve', 'reject']]);
+        $this->middleware('check.permission:approve_invoice_amer', ['only' => ['approve', 'reject', 'updateStatus']]);
         $this->middleware('check.permission:delete_invoice_amer', ['only' => ['destroy']]);
     }
 
@@ -33,7 +33,8 @@ class InvoicesAmerController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('dashboard.invoices_amer.index', compact('invoices'));
+        $availableStatuses = \App\Models\InvoiceAmer::STATUSES;
+        return view('dashboard.invoices_amer.index', compact('invoices', 'availableStatuses'));
     }
 
     /**
@@ -41,7 +42,7 @@ class InvoicesAmerController extends Controller
      */
     public function create()
     {
-        $projects = ProjectAmer::orderBy('created_at', 'desc')->get();
+        $projects = ProjectAmer::whereDoesntHave('invoice')->orderBy('created_at', 'desc')->get();
 
         return view('dashboard.invoices_amer.create', compact('projects'));
     }
@@ -56,12 +57,12 @@ class InvoicesAmerController extends Controller
             'invoice_number' => 'required|string|max:255|unique:invoice_amers',
             'amount' => 'required|numeric|min:0.01|max:999999.99',
             'payment_file' => 'required|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
-            'crane' => 'sometimes|boolean',
-            'capper_pipe' => 'sometimes|boolean',
-            'power_cable' => 'sometimes|boolean',
-            'amount_crane' => 'nullable|integer|min:0',
-            'amount_capper_pipe' => 'nullable|integer|min:0',
-            'amount_power_cable' => 'nullable|integer|min:0',
+            // 'crane' => 'sometimes|boolean',
+            // 'capper_pipe' => 'sometimes|boolean',
+            // 'power_cable' => 'sometimes|boolean',
+            // 'amount_crane' => 'nullable|integer|min:0',
+            // 'amount_capper_pipe' => 'nullable|integer|min:0',
+            // 'amount_power_cable' => 'nullable|integer|min:0',
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -85,12 +86,12 @@ class InvoicesAmerController extends Controller
                 'amount' => $request->amount,
                 'payment_file' => $filePath,
                 'status' => 'pending',
-                'crane' => (bool)$request->crane,
-                'capper_pipe' => (bool)$request->capper_pipe,
-                'power_cable' => (bool)$request->power_cable,
-                'amount_crane' => $request->amount_crane ?? 0,
-                'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
-                'amount_power_cable' => $request->amount_power_cable ?? 0,
+                // 'crane' => (bool)$request->crane,
+                // 'capper_pipe' => (bool)$request->capper_pipe,
+                // 'power_cable' => (bool)$request->power_cable,
+                // 'amount_crane' => $request->amount_crane ?? 0,
+                // 'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
+                // 'amount_power_cable' => $request->amount_power_cable ?? 0,
                 'notes' => $request->notes,
                 'created_by' => auth()->id(),
             ]);
@@ -118,7 +119,8 @@ class InvoicesAmerController extends Controller
     public function show($id)
     {
         $invoice = InvoiceAmer::with(['projectAmer', 'approvedBy', 'createdBy'])->findOrFail($id);
-        return view('dashboard.invoices_amer.show', compact('invoice'));
+        $availableStatuses = \App\Models\InvoiceAmer::STATUSES;
+        return view('dashboard.invoices_amer.show', compact('invoice', 'availableStatuses'));
     }
 
     /**
@@ -144,12 +146,12 @@ class InvoicesAmerController extends Controller
             'invoice_number' => 'required|string|max:255|unique:invoice_amers,invoice_number,' . $invoice->id,
             'amount' => 'required|numeric|min:0.01|max:999999.99',
             'payment_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
-            'crane' => 'sometimes|boolean',
-            'capper_pipe' => 'sometimes|boolean',
-            'power_cable' => 'sometimes|boolean',
-            'amount_crane' => 'nullable|integer|min:0',
-            'amount_capper_pipe' => 'nullable|integer|min:0',
-            'amount_power_cable' => 'nullable|integer|min:0',
+            // 'crane' => 'sometimes|boolean',
+            // 'capper_pipe' => 'sometimes|boolean',
+            // 'power_cable' => 'sometimes|boolean',
+            // 'amount_crane' => 'nullable|integer|min:0',
+            // 'amount_capper_pipe' => 'nullable|integer|min:0',
+            // 'amount_power_cable' => 'nullable|integer|min:0',
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -166,12 +168,12 @@ class InvoicesAmerController extends Controller
                 'project_amer_id' => $request->project_amer_id,
                 'invoice_number' => $request->invoice_number,
                 'amount' => $request->amount,
-                'crane' => (bool)$request->crane,
-                'capper_pipe' => (bool)$request->capper_pipe,
-                'power_cable' => (bool)$request->power_cable,
-                'amount_crane' => $request->amount_crane ?? 0,
-                'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
-                'amount_power_cable' => $request->amount_power_cable ?? 0,
+                // 'crane' => (bool)$request->crane,
+                // 'capper_pipe' => (bool)$request->capper_pipe,
+                // 'power_cable' => (bool)$request->power_cable,
+                // 'amount_crane' => $request->amount_crane ?? 0,
+                // 'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
+                // 'amount_power_cable' => $request->amount_power_cable ?? 0,
                 'notes' => $request->notes,
             ];
 
@@ -283,6 +285,44 @@ class InvoicesAmerController extends Controller
             return redirect()->back();
         } catch (\Exception $e) {
             notify('Failed to reject invoice: ' . $e->getMessage(), 'error');
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Update invoice status
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $invoice = InvoiceAmer::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:' . implode(',', \App\Models\InvoiceAmer::STATUSES),
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        try {
+            $newStatus = $request->status;
+
+            $updateData = [
+                'status' => $newStatus,
+                'notes' => $request->notes ?? $invoice->notes,
+            ];
+
+            if ($newStatus === 'pending') {
+                $updateData['approved_at'] = null;
+                $updateData['approved_by'] = null;
+            } else {
+                $updateData['approved_at'] = now();
+                $updateData['approved_by'] = auth()->id();
+            }
+
+            $invoice->update($updateData);
+
+            notify('Invoice status updated successfully.', 'success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            notify('Failed to update status: ' . $e->getMessage(), 'error');
             return redirect()->back();
         }
     }

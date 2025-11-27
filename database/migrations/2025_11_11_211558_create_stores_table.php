@@ -11,16 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-    //     fillable = [
-    //     'name',
-    //     'email',
-    //     'phone',
-    //     'address',
-    //     'city',
-    //     'state',
-    //     'zip',
-    //     'country',
-    // ];
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('brand_id')->constrained()->onDelete('cascade');

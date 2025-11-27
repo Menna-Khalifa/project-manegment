@@ -18,12 +18,12 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('payment_file'); // مسار الملف المرفوع
             $table->enum('status', ['paid', 'invoice_issuse', 'pending', 'canceled', 'ready_of_invoicing', 'submitted'])->default('pending');
-            $table->boolean('crane')->default(false);
-            $table->boolean('capper_pipe')->default(false);
-            $table->boolean('power_cable')->default(false);
-            $table->integer('amount_crane')->default(0);
-            $table->integer('amount_capper_pipe')->default(0);
-            $table->integer('amount_power_cable')->default(0);
+            // $table->boolean('crane')->default(false);
+            // $table->boolean('capper_pipe')->default(false);
+            // $table->boolean('power_cable')->default(false);
+            // $table->integer('amount_crane')->default(0);
+            // $table->integer('amount_capper_pipe')->default(0);
+            // $table->integer('amount_power_cable')->default(0);
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('approved_at')->nullable();

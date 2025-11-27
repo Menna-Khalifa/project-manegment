@@ -27,7 +27,7 @@ class PermissionTableSeeder extends Seeder
         DB::table('role_has_permissions')->delete();
         DB::table('model_has_permissions')->delete();
         DB::table('roles')->delete();
-        DB::table('model_has_roles')->delete();
+        DB::table(table: 'model_has_roles')->delete();
         DB::table('teams')->delete(); // حذف الفرق إذا كانت موجودة
 
         // إعادة تفعيل قيود المفاتيح الخارجية
@@ -182,6 +182,14 @@ class PermissionTableSeeder extends Seeder
                 'show_invoice_amer',
                 'approve_invoice_amer',
                 'delete_invoice_amer',
+            ],
+            'reports' => [
+                'reports_list',
+                'add_report',
+                'edit_report',
+                'show_report',
+                'download_report',
+                'delete_report',
             ],
         ];
 

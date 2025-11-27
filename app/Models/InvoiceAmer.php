@@ -10,18 +10,27 @@ class InvoiceAmer extends Model
 {
     use HasFactory;
 
+    public const STATUSES = [
+        'paid',
+        'invoice_issuse',
+        'pending',
+        'canceled',
+        'ready_of_invoicing',
+        'submitted',
+    ];
+
     protected $fillable = [
         'project_amer_id',
         'invoice_number',
         'amount',
         'payment_file',
         'status',
-        'crane',
-        'capper_pipe',
-        'power_cable',
-        'amount_crane',
-        'amount_capper_pipe',
-        'amount_power_cable',
+        // 'crane',
+        // 'capper_pipe',
+        // 'power_cable',
+        // 'amount_crane',
+        // 'amount_capper_pipe',
+        // 'amount_power_cable',
         'notes',
         'created_by',
         'approved_at',

@@ -2,12 +2,12 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-    Amer Invoice Details
+    Americana Invoice Details
 @endsection
 
 @section('page-header')
     <li class="breadcrumb-item" style="font-size: 1rem !important;">
-        <a href="{{ route('invoices_amer.index') }}">Amer Invoices</a>
+        <a href="{{ route('invoices_amer.index') }}">Americana Invoices</a>
     </li>
     <li class="breadcrumb-item active" style="font-size: 1rem !important;">
         Invoice Details
@@ -22,9 +22,9 @@
                     <h4 class="card-title mg-b-0">Invoice: {{ $invoice->invoice_number }}</h4>
                     <div>
                         @can('edit_invoice_amer')
-                        <a href="{{ route('invoices_amer.edit', $invoice->id) }}" class="btn btn-primary mr-2">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
+                            <a href="{{ route('invoices_amer.edit', $invoice->id) }}" class="btn btn-primary mr-2">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
                         @endcan
                         <a href="{{ route('invoices_amer.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back
@@ -38,7 +38,7 @@
                                 <table class="table table-borderless">
                                     <tbody>
                                         <tr>
-                                            <td class="font-weight-bold" style="width: 220px;">Amer Project</td>
+                                            <td class="font-weight-bold" style="width: 220px;">Americana Project</td>
                                             <td>{{ $invoice->projectAmer->po_num ?? '#' . $invoice->projectAmer->id }}
                                             </td>
                                         </tr>
@@ -52,7 +52,26 @@
                                         </tr>
                                         <tr>
                                             <td class="font-weight-bold">Status</td>
-                                            <td>{{ ucfirst(str_replace('_', ' ', $invoice->status)) }}</td>
+                                            <td>
+                                                @php
+                                                    $status = $invoice->status;
+                                                @endphp
+                                                @if ($status === 'pending')
+                                                    <span class="badge badge-warning">Pending</span>
+                                                @elseif ($status === 'submitted')
+                                                    <span class="badge badge-info">Submitted</span>
+                                                @elseif ($status === 'paid')
+                                                    <span class="badge badge-success">Paid</span>
+                                                @elseif ($status === 'ready_of_invoicing')
+                                                    <span class="badge badge-primary">Ready Of Invoicing</span>
+                                                @elseif ($status === 'invoice_issuse')
+                                                    <span class="badge badge-dark">Invoice Issue</span>
+                                                @elseif ($status === 'canceled')
+                                                    <span class="badge badge-danger">Canceled</span>
+                                                @else
+                                                    <span class="badge badge-secondary">{{ $status }}</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="font-weight-bold">Created By</td>
@@ -66,7 +85,7 @@
                                             <td class="font-weight-bold">Notes</td>
                                             <td>{{ $invoice->notes ?? '—' }}</td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td class="font-weight-bold">Extras</td>
                                             <td>
                                                 Crane: {{ $invoice->crane ? 'Yes' : 'No' }} ({{ $invoice->amount_crane }})
@@ -76,7 +95,7 @@
                                                 Power Cable: {{ $invoice->power_cable ? 'Yes' : 'No' }}
                                                 ({{ $invoice->amount_power_cable }})
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -104,27 +123,26 @@
                                         <h5 class="card-title mb-0">Actions</h5>
                                     </div>
                                     <div class="card-body">
-                                        @if ($invoice->status === 'pending')
-                                            <form action="{{ route('invoices_amer.approve', $invoice->id) }}" method="POST"
-                                                class="mb-2">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success btn-block">
-                                                    <i class="fas fa-check"></i> Approve (Submit)
-                                                </button>
-                                            </form>
-                                            <form action="{{ route('invoices_amer.reject', $invoice->id) }}" method="POST">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <textarea name="notes" class="form-control" rows="2" placeholder="Reason" required></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-danger btn-block">
-                                                    <i class="fas fa-times"></i> Reject (Cancel)
-                                                </button>
-                                            </form>
-                                        @else
-                                            <div class="alert alert-info">Current status:
-                                                {{ ucfirst(str_replace('_', ' ', $invoice->status)) }}</div>
-                                        @endif
+                                        <form action="{{ route('invoices_amer.update-status', $invoice->id) }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="status">Change Status</label>
+                                                <select name="status" id="status" class="form-control">
+                                                    @foreach ($availableStatuses as $status)
+                                                        <option value="{{ $status }}"
+                                                            {{ $invoice->status === $status ? 'selected' : '' }}>
+                                                            {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea name="notes" class="form-control" rows="2" placeholder="Notes (optional)"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-block">
+                                                <i class="fas fa-save"></i> Save Status
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             @endcan

@@ -49,7 +49,7 @@
             </li>
 
             <!-- إدارة مشاريع امريكانا -->
-            @if (auth()->user()->can('brands_list') ||
+            {{-- @if (auth()->user()->can('brands_list') ||
                     auth()->user()->can('stores_list') ||
                     auth()->user()->can('project_types_list') ||
                     auth()->user()->can('project_capacities_list') ||
@@ -57,8 +57,18 @@
                     auth()->user()->can('project_type_maintenances_list') ||
                     auth()->user()->can('project_models_list') ||
                     auth()->user()->can('project_amers_list') ||
-                    auth()->user()->can('invoices_amer_list'))
+                    auth()->user()->can('invoices_amer_list') ||
+                    auth()->user()->can('reports_list')) --}}
                 <li class="side-item side-item-category">Americana Management</li>
+
+                <li class="slide">
+                    <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                        href="{{ route('dashboard_amer') }}">
+                        <i class="fas fa-home side-menu__icon"
+                            style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                        <span class="side-menu__label">Homepage Americana</span>
+                    </a>
+                </li>
 
                 @can('brands_list')
                     <li class="slide">
@@ -160,7 +170,19 @@
                         </a>
                     </li>
                 @endcan
-            @endif
+
+
+                @can('reports_list')
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            href="{{ route('reports.index') }}">
+                            <i class="fas fa-chart-line side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Reports</span>
+                        </a>
+                    </li>
+                @endcan
+            {{-- @endif --}}
 
             <!-- إدارة المشاريع -->
             @if (auth()->user()->can('projects_list') ||

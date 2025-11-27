@@ -2,12 +2,12 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-    Amer Invoices List
+    Americana Invoices List
 @endsection
 
 @section('page-header')
     <li class="breadcrumb-item" style="font-size: 1rem !important;">
-        <a href="{{ route('invoices_amer.index') }}">Amer Invoices</a>
+        <a href="{{ route('invoices_amer.index') }}">Americana Invoices</a>
     </li>
     <li class="breadcrumb-item active" style="font-size: 1rem !important;">
         Invoices List
@@ -34,7 +34,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Invoice Number</th>
-                                <th>Amer Project</th>
+                                <th>Americana Project</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Uploaded Date</th>
@@ -97,14 +97,19 @@
                                                     <i class="text-primary fas fa-edit"></i>&nbsp;&nbsp;Edit
                                                 </a>
                                                 @endcan
-                                                @can('delete_invoice_amer')
-                                                <form action="{{ route('invoices_amer.destroy', $invoice->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item">
-                                                        <i class="text-danger fas fa-trash"></i>&nbsp;&nbsp;Delete
-                                                    </button>
-                                                </form>
-                                                @endcan
+                                            @can('delete_invoice_amer')
+                                            <form action="{{ route('invoices_amer.destroy', $invoice->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="text-danger fas fa-trash"></i>&nbsp;&nbsp;Delete
+                                                </button>
+                                            </form>
+                                            @endcan
+                                            @can('approve_invoice_amer')
+                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#statusModal" data-id="{{ $invoice->id }}" data-status="{{ $invoice->status }}">
+                                                <i class="text-secondary fas fa-exchange-alt"></i>&nbsp;&nbsp;Change Status
+                                            </button>
+                                            @endcan
                                             </div>
                                         </div>
                                     </td>
@@ -118,4 +123,55 @@
         </div>
     </div>
 </div>
+@can('approve_invoice_amer')
+<!-- Status Change Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="statusForm" method="POST">
+        @csrf
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="statusModalLabel">Change Invoice Status</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+                <label for="modal_status">Status</label>
+                <select name="status" id="modal_status" class="form-control">
+                    @foreach ($availableStatuses as $status)
+                        <option value="{{ $status }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea name="notes" class="form-control" rows="2" placeholder="Notes (optional)"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#statusModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var invoiceId = button.data('id');
+            var currentStatus = button.data('status');
+
+            var action = "{{ route('invoices_amer.update-status', ':id') }}";
+            action = action.replace(':id', invoiceId);
+            $('#statusForm').attr('action', action);
+
+            $('#modal_status').val(currentStatus);
+        });
+    });
+</script>
+@endcan
 @endsection

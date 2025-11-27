@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-    ProjectAmer Details - {{ $project_amer->po_num }}
+    Project Americana Details - {{ $project_amer->po_num }}
 @endsection
 
 @section('page-header')
@@ -20,7 +20,7 @@
         <div class="col-12">
             <div class="card modern-card">
                 <div class="card-header border-bottom d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>ProjectAmer Information</h5>
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Project Americana Information</h5>
                     <div class="btn-group">
                         @can('edit_project_amers')
                             <a href="{{ route('project_amers.edit', $project_amer->id) }}" class="btn btn-warning btn-sm">
@@ -258,14 +258,14 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="info-group">
+                                {{-- <div class="info-group">
                                     <label class="info-label">Extras</label>
                                     <div class="info-value">
                                         Crane: {{ $project_amer->invoice->crane ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_crane }}) |
                                         Capper Pipe: {{ $project_amer->invoice->capper_pipe ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_capper_pipe }}) |
                                         Power Cable: {{ $project_amer->invoice->power_cable ? 'Yes' : 'No' }} ({{ $project_amer->invoice->amount_power_cable }})
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-6">
                                 <div class="info-group">

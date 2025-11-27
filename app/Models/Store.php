@@ -15,6 +15,18 @@ class Store extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+    
+    // إضافة علاقة المشاريع
+    public function projectAmers()
+    {
+        return $this->hasMany(ProjectAmer::class);
+    }
+
+    // إضافة علاقة التقارير
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 
     // create uuid stores 
     protected static function boot()

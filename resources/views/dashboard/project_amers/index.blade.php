@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.master')
 
 @section('title')
-    ProjectAmer List
+    Project Americana List
 @endsection
 
 @section('page-header')
@@ -10,7 +10,7 @@
         <a href="{{ route('project_amers.index') }}">ProjectAmer</a>
     </li>
     <li class="breadcrumb-item active" style="font-size: 1rem !important;">
-        ProjectAmer List
+        Project Americana List
     </li>
     <!-- breadcrumb -->
 @endsection

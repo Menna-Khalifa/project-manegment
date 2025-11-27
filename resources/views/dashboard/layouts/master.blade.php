@@ -24,7 +24,7 @@
         @include('dashboard.layouts.main-header')
         <!-- container -->
         <div class="container-fluid">
-            @if (request()->routeIs('dashboard'))
+            @if (request()->routeIs('dashboard') || request()->routeIs('dashboard_amer'))
                 @yield('page-header')
             @else
                 <div class="breadcrumb-header justify-content-between">
