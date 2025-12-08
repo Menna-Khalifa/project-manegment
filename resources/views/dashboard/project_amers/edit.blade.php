@@ -55,7 +55,8 @@
                                         <option value="">Select Department</option>
                                         <option value="project" {{ old('dept', $project_amer->dept) == 'project' ? 'selected' : '' }}>Project</option>
                                         <option value="facility" {{ old('dept', $project_amer->dept) == 'facility' ? 'selected' : '' }}>Facility</option>
-                                        <option value="maintenance" {{ old('dept', $project_amer->dept) == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                                        <option value="maintenance_replacing" {{ old('dept', $project_amer->dept) == 'maintenance_replacing' ? 'selected' : '' }}>Maintenance / Replacing</option>
+                                        <option value="maintenance" {{ old('dept', $project_amer->dept) == 'maintenance' ? 'selected' : '' }}>Maintenance / Maintenance</option>
                                         <option value="other" {{ old('dept', $project_amer->dept) == 'other' ? 'selected' : '' }}>Other</option>
                                     </select>
                                     @error('dept')
@@ -84,10 +85,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="store_id">Store <span class="text-danger">*</span></label>
-                                    <select class="form-control @error('store_id') is-invalid @enderror" id="store_id" name="store_id" required>
+                                    <select class="form-control select2 @error('store_id') is-invalid @enderror" id="store_id" name="store_id" required>
                                         <option value="">Select Store</option>
                                         @foreach($stores as $store)
-                                            <option value="{{ $store->id }}" {{ old('store_id', $project_amer->store_id) == $store->id ? 'selected' : '' }}>{{ $store->name ?? $store->id }}</option>
+                                            <option value="{{ $store->id }}" {{ old('store_id', $project_amer->store_id) == $store->id ? 'selected' : '' }}>{{ $store->uuid }}</option>
                                         @endforeach
                                     </select>
                                     @error('store_id')
@@ -298,7 +299,7 @@
                                                         <input type="number" class="form-control" name="items_project[{{ $pIndex }}][qty]" min="1" value="{{ $item->qty }}" />
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" name="items_project[{{ $pIndex }}][brand_id]">
+                                                        <select class="form-control select2" name="items_project[{{ $pIndex }}][brand_id]">
                                                             <option value="">Select</option>
                                                             @foreach(($brands ?? []) as $brand)
                                                                 <option value="{{ $brand->id }}" {{ $item->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
@@ -421,7 +422,7 @@
                     <input type="number" class="form-control" name="items_project[${index}][qty]" min="1" value="1" />
                 </td>
                 <td>
-                    <select class="form-control" name="items_project[${index}][brand_id]">
+                    <select class="form-control select2" name="items_project[${index}][brand_id]">
                         ${renderOptions(brands, 'id', 'name')}
                     </select>
                 </td>

@@ -61,6 +61,8 @@
                                 </div>
                         </div>
 
+                        <input type="hidden" name="type" value="store">
+
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                             <button class="btn btn-main-primary pd-x-20" type="submit">Sure</button>
                         </div>

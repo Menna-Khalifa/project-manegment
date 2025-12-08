@@ -499,7 +499,6 @@
                                     <tr>
                                         <th style="width: 50px; text-align: center;">#</th>
                                         <th>Item</th>
-                                        <th style="text-align: right;">العنصر</th>
                                         <th style="width: 150px; text-align: center;">Status</th>
                                     </tr>
                                 </thead>
@@ -508,7 +507,6 @@
                                         <tr>
                                             <td style="text-align: center;">{{ $index + 1 }}</td>
                                             <td>{{ $item['en'] }}</td>
-                                            <td style="text-align: right; direction: rtl;">{{ $item['ar'] }}</td>
                                             <td style="text-align: center;">
                                                 @php
                                                     $response = $report->checklist_items[$index] ?? 'not_available';
@@ -562,9 +560,7 @@
                                                 $field['name'] !== 'project_items_used')
                                             <div class="col-md-6">
                                                 <div class="custom-field-item">
-                                                    <strong>{{ $field['label'] }}</strong> /
-                                                    <strong
-                                                        style="direction: rtl; display: inline-block;">{{ $field['label_ar'] }}</strong>
+                                                    <strong>{{ $field['label'] }}</strong>
                                                     <p class="mb-0 mt-2" style="font-size: 16px; color: #333;">
                                                         {{ $report->custom_fields[$field['name']] }}
                                                     </p>

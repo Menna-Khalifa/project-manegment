@@ -25,7 +25,7 @@ class GroupController extends Controller
     public function index()
     {
         try {
-            $groups = Group::all();
+            $groups = Group::orderBy('created_at', 'desc')->paginate('15');
             return view('dashboard.groups.index', compact('groups'));
         } catch (\Exception $e) {
             Log::error('Error in GroupController@index: ' . $e->getMessage());

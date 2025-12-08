@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -53,7 +53,9 @@
 
                                 @foreach ($stores as $key => $store)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($stores->currentPage() - 1) * $stores->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $store->uuid }}</td>
                                         <td>{{ $store->brand->name ?? __('general.not_found') }}</td>
                                         <td>{{ $store->name ?? __('general.not_found') }}</td>
@@ -120,6 +122,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $stores->appends(request()->query())->links('component.pagination', ['items' => $stores]) }}
                     </div>
                 </div>
             </div>

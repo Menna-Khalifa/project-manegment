@@ -25,7 +25,7 @@ class EquipmentsController extends Controller
     public function index()
     {
         try {
-            $equipments = Equipment::all();
+            $equipments = Equipment::orderBy('created_at', 'desc')->paginate('15');
             return view('dashboard.equipments.index', compact('equipments'));
         } catch (\Exception $e) {
             Log::error('Error in equipmentsController@index: ' . $e->getMessage());

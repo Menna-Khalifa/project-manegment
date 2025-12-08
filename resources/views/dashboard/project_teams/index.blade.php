@@ -75,7 +75,7 @@
                     </form>
 
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -93,7 +93,9 @@
                             <tbody>
                                 @foreach ($projectTeams as $team)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                           <td>
+                                            {{ ($projectTeams->currentPage() - 1) * $projectTeams->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             @can('show_project')
                                                 <a href="{{ route('projects.show', $team->project_id) }}">
@@ -270,6 +272,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $projectTeams->appends(request()->query())->links('component.pagination', ['items' => $projectTeams]) }}
                     </div>
                 </div>
             </div>

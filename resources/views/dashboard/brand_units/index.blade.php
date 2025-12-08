@@ -1,0 +1,130 @@
+@extends('dashboard.layouts.master')
+
+@section('title')
+    brands unit List
+@endsection
+
+@section('page-header')
+    <!-- breadcrumb -->
+    <li class="breadcrumb-item" style="font-size: 1rem !important;">
+        <a href="{{ route('brand_units.index') }}">brands unit</a>
+    </li>
+    <li class="breadcrumb-item active" style="font-size: 1rem !important;">
+        brands unit List
+    </li>
+    <!-- breadcrumb -->
+@endsection
+
+@section('content')
+    <!-- row opened -->
+    <div class="row row-sm">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="col-sm-1 col-md-2">
+                        @can('add_brand_unit')
+                            <a class="btn btn-primary" href="{{ route('brand_units.create') }}">
+                                <i class="las la-user-plus"></i>
+                                Add brand unit</a>
+                        @endcan
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table text-nowrap table-bordered border-primary">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    @if (auth()->user()->can('edit_brand') || auth()->user()->can('delete_brand'))
+                                        <th>Processes</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach ($brands as $key => $brand)
+                                    <tr>
+                                        <td>
+                                            {{ ($brands->currentPage() - 1) * $brands->perPage() + $loop->iteration }}
+                                        </td>
+                                        <td>{{ $brand->name ?? __('general.not_found') }}</td>
+                                        <td>{{ $brand->description ?? __('general.not_found') }}</td>
+                                        <!-- permission some -->
+                                        @if (auth()->user()->can('edit_brand') || auth()->user()->can('delete_brand'))
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button aria-expanded="false" aria-haspopup="true"
+                                                        class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
+                                                        type="button">Processes&nbsp;&nbsp;<i
+                                                            class="fas fa-caret-down ml-1"></i></button>
+                                                    <div class="dropdown-menu tx-13">
+                                                        @can('edit_brand_unit')
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('brand_units.edit', $brand->id) }}"><i
+                                                                    class="text-primary fas fa-edit"></i>&nbsp;&nbsp;Edit</a>
+                                                        @endcan
+
+                                                        @can('delete_brand_unit')
+                                                            <a class="dropdown-item modal-effect" data-effect="effect-scale"
+                                                                data-toggle="modal" href="#modaldemo8-{{ $brand->id }}"
+                                                                title="{{ __('brands.delete') }}"><i
+                                                                    class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;Delete</a>
+                                                        @endcan
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        @endif
+                                    </tr>
+
+                                    <!-- Delete Modal -->
+                                    <div class="modal" id="modaldemo8-{{ $brand->id }}">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">{{ __('brands.delete_brand') }}</h6><button
+                                                        aria-label="Close" class="close" data-dismiss="modal"
+                                                        type="button"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <form action="{{ route('brand_units.destroy', $brand->id) }}" method="post">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <p>{{ __('brands.are_you_sure_delete_brand') }}</p><br>
+                                                        <input type="hidden" name="brand_id" value="{{ $brand->id }}">
+                                                        <input class="form-control" name="brand_name"
+                                                            value="{{ $brand->name }}" type="text" readonly>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">{{ __('brands.cancel') }}</button>
+                                                        <button type="submit"
+                                                            class="btn btn-danger">{{ __('brands.sure') }}</button>
+                                                    </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $brands->appends(request()->query())->links('component.pagination', ['items' => $brands]) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/div-->
+    </div>
+
+    </div>
+    <!-- /row -->
+    </div>
+    <!-- Container closed -->
+    </div>
+    <!-- main-content closed -->
+@endsection

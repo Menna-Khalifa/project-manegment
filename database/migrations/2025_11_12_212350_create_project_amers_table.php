@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('project_amers', function (Blueprint $table) {
             $table->id();
             $table->string('po_num');
-            $table->enum('dept', ['project', 'facility', 'maintenance', 'other']);
+            $table->enum('dept', ['project', 'facility', 'maintenance', 'maintenance_replacing','other']);
             $table->enum('region', ['western_province', 'central_province', 'eastern_province', 'general']);
             $table->foreignId('store_id')->constrained('stores');
             $table->foreignId('user_id')->constrained('users');

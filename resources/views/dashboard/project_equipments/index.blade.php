@@ -163,7 +163,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -183,7 +183,9 @@
                             <tbody>
                                 @foreach ($projectEquipment as $key => $eq)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                           <td>
+                                            {{ ($projectEquipment->currentPage() - 1) * $projectEquipment->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $eq->project->name ?? __('general.not_found') }}</td>
                                         <td>{{ $eq->equipment->name ?? __('general.not_found') }}</td>
                                         <td>{{ $eq->qty }}</td>
@@ -324,9 +326,9 @@
                         </table>
                     </div>
                     <!-- Pagination -->
-                    {{-- <div class="d-flex justify-content-center">
-                        {{ $projectEquipment->appends(request()->query())->links() }}
-                    </div> --}}
+                    <div class="mt-4">
+                        {{ $projectEquipment->appends(request()->query())->links('component.pagination', ['items' => $projectEquipment]) }}
+                    </div>
                 </div>
             </div>
         </div>

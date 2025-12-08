@@ -682,7 +682,6 @@
                     <tr>
                         <th>#</th>
                         <th>Item</th>
-                        <th style="text-align: right;">العنصر</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -691,7 +690,6 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $item['en'] }}</td>
-                            <td style="text-align: right;">{{ $item['ar'] }}</td>
                             <td>
                                 <div class="status-boxes">
                                     @php
@@ -732,7 +730,7 @@
                             $field['name'] !== 'project_items_used')
                             <div class="custom-field-row">
                                 <div class="custom-field-label">
-                                    {{ $field['label'] }} / {{ $field['label_ar'] }}
+                                    {{ $field['label'] }}
                                 </div>
                                 <div class="custom-field-value">
                                     {{ $report->custom_fields[$field['name']] }}

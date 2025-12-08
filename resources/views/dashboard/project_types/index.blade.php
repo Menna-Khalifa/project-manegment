@@ -28,7 +28,7 @@
                 @endcan
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -40,11 +40,13 @@
                             <tbody>
                                 @foreach ($types as $type)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($types->currentPage() - 1) * $types->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             {{ $type->name }}
                                         </td>
-                                        <td>{{ Str::limit($type->description, 60) }}</td>
+                                        <td>{{ Str::limit($type->description, 60) ?? '-' }}</td>
                                         <td>
                                             @can('edit_project_type')
                                             <a class="btn btn-sm btn-primary" href="{{ route('project_types.edit', $type->id) }}">Edit</a>
@@ -81,7 +83,11 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $types->links() }}
+                    
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $types->appends(request()->query())->links('component.pagination', ['items' => $types]) }}
+                    </div>
                 </div>
             </div>
         </div>

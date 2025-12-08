@@ -31,10 +31,10 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Count</th>
@@ -50,7 +50,9 @@
 
                                 @foreach ($equipments as $key => $equipment)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($equipments->currentPage() - 1) * $equipments->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $equipment->name ?? __('general.not_found') }}</td>
                                         <td>{{ $equipment->description ?? __('general.not_found') }}</td>
                                         <td>{{ $equipment->count }}</td>
@@ -114,6 +116,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="mt-4">
+                        {{ $equipments->links('component.pagination', ['items' => $equipments]) }}
                     </div>
                 </div>
             </div>

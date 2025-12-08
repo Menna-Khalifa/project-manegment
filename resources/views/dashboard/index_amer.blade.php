@@ -228,7 +228,7 @@
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
                             <span class="avatar avatar-lg bg-primary-gradient text-white">
-                                <i class="fas fa-dollar-sign"></i>
+                                <i class="fas fa-money-bill-wave"></i>
                             </span>
                         </div>
                         <div>
@@ -457,11 +457,11 @@
 
     <!-- أحدث المشاريع والفواتير -->
     <div class="row row-sm">
-        <div class="col-xl-6">
+        <div class="col-xl-12">
             <div class="card p-3">
                 <div class="card-header p-1">
                     <h4 class="card-title mb-2">Latest Projects</h4>
-                    <span class="fs-12 text-muted mb-3">Last 5 projects added</span>
+                    <span class="fs-12 text-muted mb-3">Last 10 projects added</span>
                 </div>
                 <div class="card-body p-0">
                 <div class="table-responsive country-table">
@@ -509,66 +509,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-xl-6">
-            <div class="card p-3">
-                <div class="card-header p-1">
-                    <h4 class="card-title mb-2">Latest Invoices</h4>
-                    <span class="fs-12 text-muted mb-3">Last 5 invoices issued</span>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Invoice Number</th>
-                                    <th>Project</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($recentInvoices as $invoice)
-                                    <tr>
-                                        <td><span class="font-weight-semibold">{{ $invoice->invoice_number }}</span></td>
-                                        <td>{{ $invoice->projectAmer->po_num ?? '-' }}</td>
-                                        <td>{{ number_format($invoice->amount, 2) }} SAR</td>
-                                        <td>
-                                            @php
-                                                $invoiceStatusBadge = [
-                                                    'paid' => 'badge-success',
-                                                    'pending' => 'badge-warning',
-                                                    'canceled' => 'badge-danger',
-                                                    'invoice_issuse' => 'badge-info',
-                                                    'ready_of_invoicing' => 'badge-primary',
-                                                    'submitted' => 'badge-secondary',
-                                                ];
-                                                $invoiceStatusLabels = [
-                                                    'paid' => 'Paid',
-                                                    'pending' => 'Pending',
-                                                    'canceled' => 'Canceled',
-                                                    'invoice_issuse' => 'Invoice Issue',
-                                                    'ready_of_invoicing' => 'Ready of Invoicing',
-                                                    'submitted' => 'Submitted',
-                                                ];
-                                            @endphp
-                                            <span
-                                                class="badge {{ $invoiceStatusBadge[$invoice->status] ?? 'badge-primary' }}">
-                                                {{ $invoiceStatusLabels[$invoice->status] ?? $invoice->status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">No invoices available</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- أعلى المتاجر -->
@@ -576,22 +516,21 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header pb-1">
-                    <h3 class="card-title mb-2">Top Stores (Number of Projects)</h3>
-                    <p class="tx-12 text-muted mb-0">Top stores by number of projects</p>
+                    <h3 class="card-title mb-2">Top Brands (Number of Projects)</h3>
+                    <p class="tx-12 text-muted mb-0">Top Brands by number of projects</p>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
-                        @forelse($topStoresByProjects as $store)
+                        @forelse($topBrandsByProjects as $brand)
                             <div class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-0">{{ $store->name }}</h6>
-                                    <small class="text-muted">{{ $store->brand->name ?? '-' }}</small>
+                                    <h6 class="mb-0">{{ $brand->name }}</h6>
                                 </div>
-                                <span class="badge badge-primary badge-pill">{{ $store->project_amers_count }}
+                                <span class="badge badge-primary badge-pill">{{ $brand->project_amers_count }}
                                     مشروع</span>
                             </div>
                         @empty
-                            <p class="text-center text-muted py-4">No stores available</p>
+                            <p class="text-center text-muted py-4">No brands available</p>
                         @endforelse
                     </div>
                 </div>
@@ -601,18 +540,17 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header pb-1">
-                    <h3 class="card-title mb-2">Top Stores (Total Project Amount)</h3>
-                    <p class="tx-12 text-muted mb-0">Top stores by total project amount</p>
+                    <h3 class="card-title mb-2">Top Brands (Total Project Amount)</h3>
+                    <p class="tx-12 text-muted mb-0">Top brands by total project amount</p>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
-                        @forelse($topStoresByAmount as $store)
+                        @forelse($topBrandsByAmount as $brand)
                             <div class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-0">{{ $store->name }}</h6>
-                                    <small class="text-muted">{{ $store->brand->name ?? '-' }}</small>
+                                    <h6 class="mb-0">{{ $brand->name }}</h6>
                                 </div>
-                                <span class="badge badge-success badge-pill">{{ number_format($store->total_amount, 2) }}
+                                <span class="badge badge-success badge-pill">{{ number_format($brand->total_amount, 2) }}
                                     SAR</span>
                             </div>
                         @empty

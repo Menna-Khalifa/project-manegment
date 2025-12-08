@@ -28,7 +28,7 @@
                 @endcan
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -41,7 +41,9 @@
                             <tbody>
                                 @foreach ($models as $model)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($models->currentPage() - 1) * $models->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             {{ $model->name }}
                                         </td>
@@ -83,7 +85,11 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $models->links() }}
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $models->appends(request()->query())->links('component.pagination', ['items' => $models]) }}
+                    </div>
                 </div>
             </div>
         </div>

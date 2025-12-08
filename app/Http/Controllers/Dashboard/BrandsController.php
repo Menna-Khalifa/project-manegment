@@ -26,7 +26,10 @@ class BrandsController extends Controller
     public function index()
     {
         try {
-            $brands = Brand::all();
+            $brands = Brand::typeStore()
+                ->latest()
+                ->paginate(10);
+
             return view('dashboard.brands.index', compact('brands'));
         } catch (\Exception $e) {
             Log::error('Error in BrandsController@index: ' . $e->getMessage());

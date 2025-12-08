@@ -15,4 +15,9 @@ class ProjectType extends Model
     {
         return $this->hasMany(ProjectModel::class);
     }
+
+      public function projectAmerItems()
+    {
+        return $this->hasMany(ProjectAmerItem::class);
+    }
 }

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\BrandsController;
+use App\Http\Controllers\Dashboard\BrandsUnitController;
 use App\Http\Controllers\Dashboard\CompressorTypeController;
+use App\Http\Controllers\Dashboard\DashboardAmerController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EquipmentsController;
 use App\Http\Controllers\Dashboard\GroupController;
@@ -27,9 +29,11 @@ use App\Http\Controllers\Dashboard\SectionsController;
 use App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\Dashboard\TeamsController;
 use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\Dashboard\DashboardAmerController;
+use App\Models\ProjectModel;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -43,6 +47,359 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('import_lists', function () {
+    try {
+
+
+        Illuminate\Support\Facades\DB::table('brands')->delete();
+        Illuminate\Support\Facades\DB::table('project_types')->delete();
+        Illuminate\Support\Facades\DB::table('project_capacities')->delete();
+        Illuminate\Support\Facades\DB::table('project_volts')->delete();
+
+            // مسار ملف الإكسيل - غيره حسب مكان الملف عندك
+            $filePath = public_path('lists_data_americana.xlsx');
+            
+            // قراءة ملف الإكسيل
+            $spreadsheet = PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+
+            
+            // إزالة الصف الأول (العناوين)
+            array_shift($rows);
+            
+            Illuminate\Support\Facades\DB::beginTransaction();
+            
+            // مصفوفات لتخزين القيم الفريدة
+            $brandStores = [];
+            $brandUnits = [];
+            $projectTypes = [];
+            $capacities = [];
+            $volts = [];
+            
+            // جمع كل القيم الفريدة
+            foreach ($rows as $row) {
+                // العمود الثالث: Brand Store
+                if (!empty($row[2]) && !in_array($row[2], $brandStores)) {
+                    $brandStores[] = $row[2];
+                }
+                
+                // العمود الرابع: Type of unit
+                if (!empty($row[3]) && !in_array($row[3], $projectTypes)) {
+                    $projectTypes[] = $row[3];
+                }
+                
+                // العمود الخامس: AC Capacity
+                if (!empty($row[4]) && !in_array($row[4], $capacities)) {
+                    $capacities[] = $row[4];
+                }
+                
+                // العمود السادس: Volt
+                if (!empty($row[5]) && !in_array($row[5], $volts)) {
+                    $volts[] = $row[5];
+                }
+                
+                // العمود السابع: AC Brand
+                if (!empty($row[6]) && !in_array($row[6], $brandUnits)) {
+                    $brandUnits[] = $row[6];
+                }
+            }
+            
+            // حفظ Brand Stores
+            foreach ($brandStores as $brand) {
+                Illuminate\Support\Facades\DB::table('brands')->insertOrIgnore([
+                    'name' => $brand,
+                    'description' => null,
+                    'type' => 'store',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            // حفظ Brand Units
+            foreach ($brandUnits as $brand) {
+                Illuminate\Support\Facades\DB::table('brands')->insertOrIgnore([
+                    'name' => $brand,
+                    'description' => null,
+                    'type' => 'unit',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            // حفظ Project Types
+            foreach ($projectTypes as $type) {
+                Illuminate\Support\Facades\DB::table('project_types')->insertOrIgnore([
+                    'name' => $type,
+                    'description' => null,
+                    'type' => 'project',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            // حفظ Capacities
+            foreach ($capacities as $capacity) {
+                Illuminate\Support\Facades\DB::table('project_capacities')->insertOrIgnore([
+                    'name' => $capacity,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            // حفظ Volts
+            foreach ($volts as $volt) {
+                Illuminate\Support\Facades\DB::table('project_volts')->insertOrIgnore([
+                    'value' => $volt,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            Illuminate\Support\Facades\DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'تم استيراد البيانات بنجاح',
+                'stats' => [
+                    'brand_stores' => count($brandStores),
+                    'brand_units' => count($brandUnits),
+                    'project_types' => count($projectTypes),
+                    'capacities' => count($capacities),
+                    'volts' => count($volts)
+                ]
+            ]);
+            
+        } catch (\Exception $e) {
+            Illuminate\Support\Facades\DB::rollBack();
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء الاستيراد: ' . $e->getMessage()
+            ], 500);
+        }
+});
+
+Route::get('import_lists2', function () {
+    try {
+
+        // Illuminate\Support\Facades\DB::table('project_types')->delete();
+        Illuminate\Support\Facades\DB::table('project_models')->delete();
+
+            // مسار ملف الإكسيل - غيره حسب مكان الملف عندك
+            $filePath = public_path('lists2_data_americana.xlsx');
+            
+            // قراءة ملف الإكسيل
+            $spreadsheet = PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+
+            
+            // إزالة الصف الأول (العناوين)
+            array_shift($rows);
+            
+            Illuminate\Support\Facades\DB::beginTransaction();
+            
+            // مصفوفات لتخزين القيم الفريدة
+            $projectTypes = [];
+            $projectModels = [];
+            
+            // جمع كل القيم الفريدة
+            foreach ($rows as $row) {
+                
+                // العمود الرابع: Type of unit
+                if (!empty($row[0]) && !in_array($row[0], $projectTypes)) {
+                    $projectTypes[] = $row[0];
+                }
+                
+                // العمود السابع: AC Brand
+                if (!empty($row[1]) && !in_array($row[1], $projectModels)) {
+                    $projectModels[] = $row[1];
+                }
+            }
+            
+            // حفظ Project Types
+            foreach ($projectTypes as $type) {
+                Illuminate\Support\Facades\DB::table('project_types')->insertOrIgnore([
+                    'name' => $type,
+                    'description' => null,
+                    'type' => 'maintenance',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+
+             // جلب كل الـ IDs من project_types اللي نوعها maintenance
+        $projectTypeIds = Illuminate\Support\Facades\DB::table('project_types')
+            ->where('type', 'maintenance')
+            ->pluck('id')
+            ->toArray();
+
+             // حفظ Project Models
+        foreach ($projectModels as $model) {
+            // اختيار project_type_id عشوائي من الـ IDs الموجودة
+            $randomProjectTypeId = $projectTypeIds[array_rand($projectTypeIds)];
+            
+            Illuminate\Support\Facades\DB::table('project_models')->insert([
+                'project_type_id' => $randomProjectTypeId,
+                'name' => $model,
+                'description' => null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+            
+            Illuminate\Support\Facades\DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'تم استيراد البيانات بنجاح',
+                'stats' => [
+                    'project_types' => count($projectTypes),
+                    'project_models' => count($projectModels),
+                ]
+            ]);
+            
+        } catch (\Exception $e) {
+            Illuminate\Support\Facades\DB::rollBack();
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء الاستيراد: ' . $e->getMessage()
+            ], 500);
+        }
+});
+
+Route::get('import_stores', function () {
+    try {
+        // مسار ملف الإكسيل
+        $filePath = public_path('stores_data_americana.xlsx');
+        
+        // قراءة ملف الإكسيل
+        $spreadsheet = PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        
+        // إزالة الصف الأول (العناوين)
+        array_shift($rows);
+        
+        Illuminate\Support\Facades\DB::beginTransaction();
+        
+        // جلب كل الـ brands من نوع store مع أسمائها
+        $brands = Illuminate\Support\Facades\DB::table('brands')
+            ->where('type', 'store')
+            ->pluck('id', 'name')
+            ->toArray();
+        
+        $successCount = 0;
+        $failedCount = 0;
+        $errors = [];
+        
+        foreach ($rows as $index => $row) {
+            try {
+                // تخطي الصفوف الفارغة
+                if (empty($row[0]) && empty($row[1]) && empty($row[2])) {
+                    continue;
+                }
+                
+                // العمود 0: BRAND ID (UUID)
+                $uuid = trim($row[0] ?? '');
+                
+                // العمود 1: Brand Store
+                $brandStoreName = trim($row[1] ?? '');
+                
+                // العمود 2: Store Name
+                $storeName = trim($row[2] ?? '');
+                
+                // العمود 3: City
+                $city = trim($row[3] ?? '');
+                
+                // العمود 4: Google_location
+                $googleLocation = trim($row[4] ?? '');
+                
+                // العمود 5: Email_Address
+                $email = trim($row[5] ?? '');
+                
+                // البحث عن brand_id المطابق
+                $brandId = null;
+                
+                // البحث بالتطابق التام أولاً
+                if (isset($brands[$brandStoreName])) {
+                    $brandId = $brands[$brandStoreName];
+                } else {
+                    // البحث بالتطابق الجزئي (case-insensitive)
+                    foreach ($brands as $brandName => $id) {
+                        if (stripos($brandName, $brandStoreName) !== false || 
+                            stripos($brandStoreName, $brandName) !== false) {
+                            $brandId = $id;
+                            break;
+                        }
+                    }
+                }
+                
+                // إذا لم يتم العثور على brand
+                if (!$brandId) {
+                    $failedCount++;
+                    $errors[] = "صف " . ($index + 2) . ": لم يتم العثور على Brand Store: $brandStoreName";
+                    continue;
+                }
+                
+                // التحقق من وجود البيانات المطلوبة
+                if (empty($uuid) || empty($storeName) || empty($email)) {
+                    $failedCount++;
+                    $errors[] = "صف " . ($index + 2) . ": بيانات ناقصة (UUID, Store Name, Email مطلوبة)";
+                    continue;
+                }
+                
+                // حفظ المتجر
+                Illuminate\Support\Facades\DB::table('stores')->insert([
+                    'brand_id' => $brandId,
+                    'uuid' => $uuid,
+                    'name' => $storeName,
+                    'email' => $email,
+                    'phone' => null,
+                    'country' => 'KSA',
+                    'city' => $city ?: null,
+                    'state' => null,
+                    'address' => $googleLocation ?: null,
+                    'zip' => null,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                
+                $successCount++;
+                
+            } catch (\Exception $e) {
+                $failedCount++;
+                $errors[] = "صف " . ($index + 2) . ": " . $e->getMessage();
+            }
+        }
+        
+        Illuminate\Support\Facades\DB::commit();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'تم استيراد البيانات',
+            'stats' => [
+                'success' => $successCount,
+                'failed' => $failedCount,
+                'total' => $successCount + $failedCount
+            ],
+            'errors' => $errors
+        ]);
+        
+    } catch (\Exception $e) {
+        Illuminate\Support\Facades\DB::rollBack();
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'حدث خطأ أثناء الاستيراد: ' . $e->getMessage()
+        ], 500);
+    }
+});
 
 
 Route::get('view_report', function () {
@@ -225,6 +582,17 @@ Route::group([
         Route::get('{brand}/edit', 'edit')->name('brands.edit');
         Route::post('{brand}/update', 'update')->name('brands.update');
         Route::post('{brand}/destroy', 'destroy')->name('brands.destroy');
+    });
+    
+    // Brands unit routes
+    Route::prefix('brand_units')->controller(BrandsUnitController::class)->group(function () {
+        Route::get('/index', 'index')->name('brand_units.index');
+        Route::get('/create', 'create')->name('brand_units.create');
+        Route::post('/store', 'store')->name('brand_units.store');
+        Route::get('{brand_unit}/show', 'show')->name(name: 'brand_units.show');
+        Route::get('{brand_unit}/edit', 'edit')->name('brand_units.edit');
+        Route::post('{brand_unit}/update', 'update')->name('brand_units.update');
+        Route::post('{brand_unit}/destroy', 'destroy')->name('brand_units.destroy');
     });
 
     // stores routes

@@ -68,7 +68,7 @@ class ProjectAmerController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projects = $query->paginate(15);
+            $projects = $query->paginate(10);
 
             return view('dashboard.project_amers.index', compact('projects'));
         } catch (\Exception $e) {
@@ -89,7 +89,7 @@ class ProjectAmerController extends Controller
             $typesProject = ProjectType::where('type', 'project')->orderBy('name')->get();
             $capacities = ProjectCapacity::orderBy('name')->get();
             $volts = ProjectVolt::orderBy('value')->get();
-            $brands = Brand::orderBy('name')->get();
+            $brands = Brand::typeUnit()->orderBy('name')->get();
             $models = ProjectModel::orderBy('name')->get();
             return view('dashboard.project_amers.create', compact('users', 'stores', 'typesMaintenance', 'typesProject', 'capacities', 'volts', 'brands', 'models'));
         } catch (\Exception $e) {
@@ -107,7 +107,7 @@ class ProjectAmerController extends Controller
 
             $validatedData = $request->validate([
                 'po_num' => 'required|string|max:255|unique:project_amers,po_num',
-                'dept' => 'required|in:project,facility,maintenance,other',
+                'dept' => 'required|in:project,facility,maintenance,maintenance_replacing,other',
                 'region' => 'required|in:western_province,central_province,eastern_province,general',
                 'store_id' => 'required|exists:stores,id',
                 'user_id' => 'required|exists:users,id',
@@ -202,7 +202,7 @@ class ProjectAmerController extends Controller
             $typesProject = ProjectType::where('type', 'project')->orderBy('name')->get();
             $capacities = ProjectCapacity::orderBy('name')->get();
             $volts = ProjectVolt::orderBy('value')->get();
-            $brands = Brand::orderBy('name')->get();
+            $brands = Brand::typeUnit()->orderBy('name')->get();
             $models = ProjectModel::orderBy('name')->get();
             $project_amer->load('items');
             return view('dashboard.project_amers.edit', compact('project_amer', 'users', 'stores', 'typesMaintenance', 'typesProject', 'capacities', 'volts', 'brands', 'models'));
@@ -221,7 +221,7 @@ class ProjectAmerController extends Controller
         try {
             $validatedData = $request->validate([
                 'po_num' => 'required|string|max:255|unique:project_amers,po_num,' . $project_amer->id,
-                'dept' => 'required|in:project,facility,maintenance,other',
+                'dept' => 'required|in:project,facility,maintenance,maintenance_replacing,other',
                 'region' => 'required|in:western_province,central_province,eastern_province,general',
                 'store_id' => 'required|exists:stores,id',
                 'user_id' => 'required|exists:users,id',

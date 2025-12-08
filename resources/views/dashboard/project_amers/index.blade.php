@@ -69,8 +69,10 @@
                                     </option>
                                     <option value="facility" {{ request('dept') === 'facility' ? 'selected' : '' }}>
                                         Facility</option>
+                                    <option value="maintenance_replacing" {{ request('dept') === 'maintenance_replacing' ? 'selected' : '' }}>
+                                        Maintenance / Replacing</option>
                                     <option value="maintenance" {{ request('dept') === 'maintenance' ? 'selected' : '' }}>
-                                        Maintenance</option>
+                                        Maintenance / Maintenance</option>
                                     <option value="other" {{ request('dept') === 'other' ? 'selected' : '' }}>Other
                                     </option>
                                 </select>
@@ -124,7 +126,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -146,7 +148,9 @@
                             <tbody>
                                 @foreach ($projects as $key => $project)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($projects->currentPage() - 1) * $projects->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             @can('show_project_amers')
                                                 <a href="{{ route('project_amers.show', $project->id) }}">
@@ -203,7 +207,9 @@
                                         </td>
 
 
-                                        @if (auth()->user()->can('edit_project_amers') || auth()->user()->can('show_project_amers') || auth()->user()->can('delete_project_amers'))
+                                        @if (auth()->user()->can('edit_project_amers') ||
+                                                auth()->user()->can('show_project_amers') ||
+                                                auth()->user()->can('delete_project_amers'))
                                             <td>
                                                 <div class="dropdown">
                                                     <button aria-expanded="false" aria-haspopup="true"
@@ -212,10 +218,11 @@
                                                             class="fas fa-caret-down ml-1"></i></button>
                                                     <div class="dropdown-menu tx-13">
                                                         @can('download_project_amers')
-                                                        <a href="{{ route('project_amers.download_service_completion', $project->id) }}"
-                                                            class="dropdown-item">
-                                                            <i class="text-warning fa fa-download"></i>&nbsp;&nbsp; تحميل Service Completion
-                                                        </a>
+                                                            <a href="{{ route('project_amers.download_service_completion', $project->id) }}"
+                                                                class="dropdown-item">
+                                                                <i class="text-warning fa fa-download"></i>&nbsp;&nbsp; تحميل
+                                                                Service Completion
+                                                            </a>
                                                         @endcan
                                                         @can('show_project_amers')
                                                             <a class="dropdown-item"
@@ -279,6 +286,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $projects->links('component.pagination', ['items' => $projects]) }}
                     </div>
                 </div>
             </div>

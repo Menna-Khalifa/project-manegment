@@ -31,10 +31,10 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Section</th>
@@ -50,7 +50,9 @@
 
                                 @foreach ($section_items as $key => $section)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($section_items->currentPage() - 1) * $section_items->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $section->name ?? __('general.not_found') }}</td>
                                         <td>{{ $section->description ?? __('general.not_found') }}</td>
                                         <td>{{ $section->section->name ?? __('general.not_found') }}</td>
@@ -114,6 +116,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $section_items->appends(request()->query())->links('component.pagination', ['items' => $section_items]) }}
                     </div>
                 </div>
             </div>

@@ -47,6 +47,16 @@
                             </div>
                             <div class="col-md-6 mg-b-20">
                                 <div class="form-group mg-b-0">
+                                    <label>UUID Store:<span class="tx-danger">*</span></label>
+                                    <input class="form-control" placeholder="UUID Store" name="uuid"
+                                        value="{{ old('uuid', $store->uuid) }}" type="text">
+                                    @error('uuid')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6 mg-b-20">
+                                <div class="form-group mg-b-0">
                                     <label>Name:<span class="tx-danger">*</span></label>
                                     <input class="form-control" placeholder="Name" name="name"
                                         value="{{ old('name', $store->name) }}" type="text">

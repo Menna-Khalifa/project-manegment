@@ -21,20 +21,14 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        // $table->foreignId('brand_id')->constrained()->onDelete('cascade');
-        //     $table->uuid('uuid')->unique();
-        //     $table->string('name');
-        //     $table->string('email')->unique();
-        //     $table->string('phone')->nullable();
-        //     $table->string('country')->nullable();
-        //     $table->string('city')->nullable();
-        //     $table->string('state')->nullable();
-        //     $table->string('address')->nullable();
-        //     $table->string('zip')->nullable();
+
+        $storeId = optional($this->route('store'))->id;
+        
         return [
             'brand_id' => 'required|exists:brands,id',
+            'uuid' => 'required|string|unique:stores,uuid,' . $storeId,
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:stores',
+            'email' => 'required|string|email|max:255',
             'phone' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
@@ -54,12 +48,13 @@ class StoreRequest extends FormRequest
         return [
             'brand_id.required' => 'يجب اختيار العلامة',
             'brand_id.exists' => 'العلامة المختارة غير موجودة',
+            'uuid.required' => 'يجب ادخال معرف المتجر',
+            'uuid.unique' => 'معرف المتجر هذا مستخدم بالفعل',
             'name.required' => 'اسم المتجر مطلوب',
             'name.max' => 'اسم المتجر يجب أن لا يتجاوز 255 حرف',
             'email.required' => 'البريد الإلكتروني مطلوب',
             'email.email' => 'يجب أن يكون البريد الإلكتروني صالحًا',
             'email.max' => 'البريد الإلكتروني يجب أن لا يتجاوز 255 حرف',
-            'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
             'phone.max' => 'رقم الهاتف يجب أن لا يتجاوز 20 حرف',
             'country.max' => 'الدولة يجب أن لا تتجاوز 255 حرف',
             'city.max' => 'المدينة يجب أن لا تتجاوز 255 حرف',

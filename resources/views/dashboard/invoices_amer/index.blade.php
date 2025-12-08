@@ -29,7 +29,7 @@
             @endcan
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table key-buttons text-md-nowrap" id="example1">
+                    <table class="table text-nowrap table-bordered border-primary">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -45,7 +45,9 @@
                         <tbody>
                             @foreach ($invoices as $invoice)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                       <td>
+                                            {{ ($invoices->currentPage() - 1) * $invoices->perPage() + $loop->iteration }}
+                                        </td>
                                     <td>{{ $invoice->invoice_number }}</td>
                                     <td>
                                         <strong>{{ $invoice->projectAmer->po_num ?? ('#' . $invoice->projectAmer->id) }}</strong>
@@ -117,8 +119,11 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $invoices->links() }}
                 </div>
+
+                <div class="mt-4">
+                        {{ $invoices->links('component.pagination', ['items' => $invoices]) }}
+                    </div>
             </div>
         </div>
     </div>

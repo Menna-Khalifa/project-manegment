@@ -23,7 +23,8 @@ class BrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
+            'type' => 'required|in:unit,store',
         ];
     }
 
@@ -40,6 +41,8 @@ class BrandRequest extends FormRequest
             'description.nullable' => 'الوصف غير مطلوب',
             'description.max' => 'الوصف يجب أن لا يتجاوز 255 حرف',
             'description.string' => 'الوصف يجب أن يكون نصًا',
+            'type.required' => 'نوع العلامة مطلوب',
+            'type.in' => 'نوع العلامة يجب أن يكون unit أو store',
         ];
     }
 }

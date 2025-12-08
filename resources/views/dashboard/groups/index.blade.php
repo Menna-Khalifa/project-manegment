@@ -31,10 +31,10 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>{{ __('groups.name') }}</th>
                                     <th>{{ __('groups.description') }}</th>
                                     @if (
@@ -49,7 +49,9 @@
 
                                 @foreach ($groups as $key => $group)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($groups->currentPage() - 1) * $groups->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $group->name ?? __('general.not_found') }}</td>
                                         <td>{{ $group->description ?? __('general.not_found') }}</td>
                                         <!-- permission some -->
@@ -112,6 +114,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $groups->links('component.pagination', ['items' => $groups]) }}
                     </div>
                 </div>
             </div>

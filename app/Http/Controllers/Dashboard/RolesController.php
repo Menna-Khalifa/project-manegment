@@ -20,11 +20,11 @@ class RolesController extends Controller
      */
     function __construct()
     {
-        // $this->middleware('check.permission:role_lists', ['only' => ['index']]);
-        // $this->middleware('check.permission:add_role', ['only' => ['create', 'store']]);
-        // $this->middleware('check.permission:show_role', ['only' => ['show']]);
-        // $this->middleware('check.permission:edit_role', ['only' => ['edit', 'update']]);
-        // $this->middleware('check.permission:delete_role', ['only' => ['destroy']]);
+        $this->middleware('check.permission:roles_list', ['only' => ['index']]);
+        $this->middleware('check.permission:add_role', ['only' => ['create', 'store']]);
+        $this->middleware('check.permission:show_role', ['only' => ['show']]);
+        $this->middleware('check.permission:edit_role', ['only' => ['edit', 'update']]);
+        $this->middleware('check.permission:delete_role', ['only' => ['destroy']]);
     }
 
     /**
@@ -34,7 +34,7 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('created_at', 'desc')->paginate('15');
         return view('dashboard.roles.index', compact('roles'));
     }
 

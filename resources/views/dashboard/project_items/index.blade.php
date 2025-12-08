@@ -109,7 +109,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -133,7 +133,9 @@
                             <tbody>
                                 @foreach ($projectItems as $key => $item)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                           <td>
+                                            {{ ($projectItems->currentPage() - 1) * $projectItems->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $item->project->name ?? __('general.not_found') }}</td>
                                         <td>{{ $item->section->name ?? __('general.not_found') }}</td>
                                         <td>{{ $item->sectionItem->name ?? __('general.not_found') }}</td>
@@ -298,6 +300,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $projectItems->appends(request()->query())->links('component.pagination', ['items' => $projectItems]) }}
                     </div>
                 </div>
             </div>

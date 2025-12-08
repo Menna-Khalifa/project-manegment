@@ -74,4 +74,19 @@ class User extends Authenticatable implements HasMedia
                 $q->where('status', '!=', 'completed');
             });
     }
+
+    public function projectAmers()
+{
+    return $this->hasMany(ProjectAmer::class);
+}
+
+public function createdInvoices()
+{
+    return $this->hasMany(InvoiceAmer::class, 'created_by');
+}
+
+public function approvedInvoices()
+{
+    return $this->hasMany(InvoiceAmer::class, 'approved_by');
+}
 }

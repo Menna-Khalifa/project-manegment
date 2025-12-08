@@ -31,15 +31,13 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Description</th>
-                                    @if (
-                                            auth()->user()->can('edit_brand') ||
-                                            auth()->user()->can('delete_brand'))
+                                    @if (auth()->user()->can('edit_brand') || auth()->user()->can('delete_brand'))
                                         <th>Processes</th>
                                     @endif
                                 </tr>
@@ -49,13 +47,13 @@
 
                                 @foreach ($brands as $key => $brand)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($brands->currentPage() - 1) * $brands->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $brand->name ?? __('general.not_found') }}</td>
                                         <td>{{ $brand->description ?? __('general.not_found') }}</td>
                                         <!-- permission some -->
-                                        @if (
-                                                auth()->user()->can('edit_brand') ||
-                                                auth()->user()->can('delete_brand'))
+                                        @if (auth()->user()->can('edit_brand') || auth()->user()->can('delete_brand'))
                                             <td>
                                                 <div class="dropdown">
                                                     <button aria-expanded="false" aria-haspopup="true"
@@ -94,8 +92,7 @@
                                                     @csrf
                                                     <div class="modal-body">
                                                         <p>{{ __('brands.are_you_sure_delete_brand') }}</p><br>
-                                                        <input type="hidden" name="brand_id"
-                                                            value="{{ $brand->id }}">
+                                                        <input type="hidden" name="brand_id" value="{{ $brand->id }}">
                                                         <input class="form-control" name="brand_name"
                                                             value="{{ $brand->name }}" type="text" readonly>
                                                     </div>
@@ -112,6 +109,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $brands->appends(request()->query())->links('component.pagination', ['items' => $brands]) }}
                     </div>
                 </div>
             </div>

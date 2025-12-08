@@ -31,7 +31,7 @@ class ReportController extends Controller
 
     public function index()
     {
-        $reports = Report::with(['creator', 'store', 'projectAmer'])->latest()->paginate(15);
+        $reports = Report::with(['creator', 'store', 'projectAmer'])->orderBy('created_at', 'desc')->paginate(15);
         return view('dashboard.reports.index', compact('reports'));
     }
 

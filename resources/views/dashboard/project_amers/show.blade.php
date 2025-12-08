@@ -31,11 +31,12 @@
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                         @can('show_invoice_amer')
-                        @if($project_amer->invoice)
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#invoiceModal{{ $project_amer->invoice->id }}">
-                                <i class="las la-file-invoice"></i> View Invoice
-                            </button>
-                        @endif
+                            @if ($project_amer->invoice)
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target="#invoiceModal{{ $project_amer->invoice->id }}">
+                                    <i class="las la-file-invoice"></i> View Invoice
+                                </button>
+                            @endif
                         @endcan
                     </div>
                 </div>
@@ -218,7 +219,9 @@
             </div>
         </div>
     @endif
-    <!-- Invoice Modals -->
+
+    @if ($project_amer->invoice !== null)
+        <!-- Invoice Modals -->
         <div class="modal fade" id="invoiceModal{{ $project_amer->invoice->id }}" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -235,7 +238,8 @@
                                 </div>
                                 <div class="info-group">
                                     <label class="info-label">Amount</label>
-                                    <div class="info-value text-success">{{ number_format($project_amer->invoice->amount, 2) }} SAR</div>
+                                    <div class="info-value text-success">
+                                        {{ number_format($project_amer->invoice->amount, 2) }} SAR</div>
                                 </div>
                                 <div class="info-group">
                                     <label class="info-label">Status</label>
@@ -254,7 +258,8 @@
                                         @elseif ($status === 'canceled')
                                             <span class="badge badge-danger">Canceled</span>
                                         @else
-                                            <span class="badge badge-secondary">{{ ucfirst(str_replace('_',' ', $status)) }}</span>
+                                            <span
+                                                class="badge badge-secondary">{{ ucfirst(str_replace('_', ' ', $status)) }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -270,7 +275,8 @@
                             <div class="col-md-6">
                                 <div class="info-group">
                                     <label class="info-label">Created Date</label>
-                                    <div class="info-value">{{ $project_amer->invoice->created_at->format('M d, Y H:i') }}</div>
+                                    <div class="info-value">{{ $project_amer->invoice->created_at->format('M d, Y H:i') }}
+                                    </div>
                                 </div>
                                 @if ($project_amer->invoice->approved_by)
                                     <div class="info-group">
@@ -279,14 +285,16 @@
                                     </div>
                                     <div class="info-group">
                                         <label class="info-label">Approved Date</label>
-                                        <div class="info-value">{{ $project_amer->invoice->approved_at?->format('M d, Y H:i') }}</div>
+                                        <div class="info-value">
+                                            {{ $project_amer->invoice->approved_at?->format('M d, Y H:i') }}</div>
                                     </div>
                                 @endif
                                 @if ($project_amer->invoice->payment_file)
                                     <div class="info-group">
                                         <label class="info-label">Payment File</label>
                                         <div class="info-value">
-                                            <a href="{{ asset('storage/' . $project_amer->invoice->payment_file) }}" target="_blank" class="btn btn-sm btn-info">
+                                            <a href="{{ asset('storage/' . $project_amer->invoice->payment_file) }}"
+                                                target="_blank" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i> View File
                                             </a>
                                         </div>
@@ -304,6 +312,7 @@
                 </div>
             </div>
         </div>
+    @endif
 @endsection
 
 @section('css')

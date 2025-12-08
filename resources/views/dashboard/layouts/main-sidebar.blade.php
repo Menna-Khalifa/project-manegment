@@ -37,28 +37,7 @@
             </div>
         </div>
         <ul class="side-menu">
-            <!-- الرئيسية -->
-            <li class="side-item side-item-category">{{ __('layouts/main-sidebar.main') }}</li>
-            <li class="slide">
-                <a class="side-menu__item d-flex justify-content-between align-items-baseline"
-                    href="{{ route('dashboard') }}">
-                    <i class="fas fa-home side-menu__icon"
-                        style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
-                    <span class="side-menu__label">{{ __('layouts/main-sidebar.main') }}</span>
-                </a>
-            </li>
-
-            <!-- إدارة مشاريع امريكانا -->
-            {{-- @if (auth()->user()->can('brands_list') ||
-                    auth()->user()->can('stores_list') ||
-                    auth()->user()->can('project_types_list') ||
-                    auth()->user()->can('project_capacities_list') ||
-                    auth()->user()->can('project_volts_list') ||
-                    auth()->user()->can('project_type_maintenances_list') ||
-                    auth()->user()->can('project_models_list') ||
-                    auth()->user()->can('project_amers_list') ||
-                    auth()->user()->can('invoices_amer_list') ||
-                    auth()->user()->can('reports_list')) --}}
+            <!-- الرئيسية Americana -->
                 <li class="side-item side-item-category">Americana Management</li>
 
                 <li class="slide">
@@ -70,6 +49,17 @@
                     </a>
                 </li>
 
+                @can('brands_unit_list')
+                    <li class="slide">
+                        <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                            href="{{ route('brand_units.index') }}">
+                            <i class="fas fa-tags side-menu__icon"
+                                style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                            <span class="side-menu__label">Brands Unit</span>
+                        </a>
+                    </li>
+                @endcan
+                
                 @can('brands_list')
                     <li class="slide">
                         <a class="side-menu__item d-flex justify-content-between align-items-baseline"
@@ -171,7 +161,6 @@
                     </li>
                 @endcan
 
-
                 @can('reports_list')
                     <li class="slide">
                         <a class="side-menu__item d-flex justify-content-between align-items-baseline"
@@ -182,7 +171,17 @@
                         </a>
                     </li>
                 @endcan
-            {{-- @endif --}}
+
+                 <!-- الرئيسية -->
+            <li class="side-item side-item-category">{{ __('layouts/main-sidebar.main') }}</li>
+            <li class="slide">
+                <a class="side-menu__item d-flex justify-content-between align-items-baseline"
+                    href="{{ route('dashboard') }}">
+                    <i class="fas fa-home side-menu__icon"
+                        style="font-size: 17px !important;margin:0 0.5rem !important;"></i>
+                    <span class="side-menu__label">{{ __('layouts/main-sidebar.main') }}</span>
+                </a>
+            </li>
 
             <!-- إدارة المشاريع -->
             @if (auth()->user()->can('projects_list') ||

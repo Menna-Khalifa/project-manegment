@@ -104,7 +104,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -126,7 +126,9 @@
                             <tbody>
                                 @foreach ($projects as $key => $project)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                           <td>
+                                            {{ ($projects->currentPage() - 1) * $projects->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             @can('show_project')
                                                 <a href="{{ route('projects.show', $project->id) }}">
@@ -259,6 +261,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $projects->appends(request()->query())->links('component.pagination', ['items' => $projects]) }}
                     </div>
                 </div>
             </div>

@@ -31,10 +31,10 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>{{ __('admins.image') }}</th>
                                     <th>{{ __('admins.name') }}</th>
                                     <th>{{ __('admins.email') }}</th>
@@ -58,7 +58,9 @@
 
 
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($admins->currentPage() - 1) * $admins->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             @if ($admin->getFirstMediaUrl('avatars') != null)
                                                 <div class="main-img-user avatar-lg">
@@ -249,6 +251,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $admins->links('component.pagination', ['items' => $admins]) }}
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->constrained()->onDelete('cascade');
             $table->uuid('uuid')->unique();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();

@@ -91,7 +91,7 @@
                                         <option value="">Select Report Type</option>
                                         <option value="start_up_report"
                                             {{ old('report_type') == 'start_up_report' ? 'selected' : '' }}>
-                                            Packaged Unit Start Up Report
+                                            Start Up Report
                                         </option>
                                         <option value="work_completed"
                                             {{ old('report_type') == 'work_completed' ? 'selected' : '' }}>
@@ -99,7 +99,7 @@
                                         </option>
                                         <option value="sites_refer_report"
                                             {{ old('report_type') == 'sites_refer_report' ? 'selected' : '' }}>
-                                            Sites Refer Report
+                                            Sites Rever Report
                                         </option>
                                     </select>
                                     @error('report_type')
@@ -838,7 +838,7 @@
                 html += `
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>${field.label} / ${field.label_ar}</label>`;
+                            <label>${field.label}</label>`;
 
                 if (field.type === 'textarea') {
                     html += `<textarea name="custom_fields[${field.name}]" 
@@ -869,7 +869,6 @@
                             <tr>
                                 <th style="width: 50px;">#</th>
                                 <th>Item</th>
-                                <th style="text-align: right;">العنصر</th>
                                 <th style="width: 250px; text-align: center;">Response</th>
                             </tr>
                         </thead>
@@ -880,7 +879,6 @@
                     <tr>
                         <td style="text-align: center;">${index + 1}</td>
                         <td>${item.en}</td>
-                        <td style="text-align: right; direction: rtl;">${item.ar}</td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="custom-control custom-radio mx-2">

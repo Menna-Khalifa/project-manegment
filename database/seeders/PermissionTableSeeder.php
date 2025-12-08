@@ -131,6 +131,12 @@ class PermissionTableSeeder extends Seeder
                 'edit_brand',
                 'delete_brand',
             ],
+            'brands_unit' => [
+                'brands_unit_list',
+                'add_brand_unit',
+                'edit_brand_unit',
+                'delete_brand_unit',
+            ],
             'stores' => [
                 'stores_list',
                 'add_store',

@@ -15,8 +15,8 @@ class Report extends Model
         'report_type',
         'report_date',
         'store_id',
-           'store_name', // جديد
-    'store_city', // جديد
+        'store_name', // جديد
+        'store_city', // جديد
         'project_amer_id',
         'checklist_items',
         'custom_fields',
@@ -30,7 +30,7 @@ class Report extends Model
         'report_date' => 'date',
         'checklist_items' => 'array',
         'custom_fields' => 'array',
-            'units' => 'array', // جديد
+        'units' => 'array', // جديد
         'images' => 'array',
     ];
 

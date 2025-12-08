@@ -28,7 +28,7 @@ class StoresController extends Controller
     public function index()
     {
         try {
-            $stores = Store::all();
+            $stores = Store::orderBy('created_at', 'desc')->paginate('10');
             return view('dashboard.stores.index', compact('stores'));
         } catch (\Exception $e) {
             Log::error('Error in StoresController@index: ' . $e->getMessage());

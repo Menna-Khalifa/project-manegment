@@ -39,7 +39,7 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table class="table key-buttons text-md-nowrap" id="example1">
+                    <table class="table text-nowrap table-bordered border-primary">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -57,7 +57,9 @@
                         <tbody>
                             @forelse ($reports as $report)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                       <td>
+                                            {{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}
+                                        </td>
                                     <td>
                                         @if ($report->report_type === 'start_up_report')
                                             <span class="badge badge-primary">Start Up Report</span>
@@ -115,7 +117,11 @@
                             @endforelse
                         </tbody>
                     </table>
-                    {{ $reports->links() }}
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $reports->appends(request()->query())->links('component.pagination', ['items' => $reports]) }}
+                    </div>
                 </div>
             </div>
         </div>

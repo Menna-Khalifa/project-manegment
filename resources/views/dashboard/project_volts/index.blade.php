@@ -28,7 +28,7 @@
                 @endcan
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -39,7 +39,9 @@
                             <tbody>
                                 @foreach ($volts as $volt)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($volts->currentPage() - 1) * $volts->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             {{ $volt->value }}
                                         </td>
@@ -85,7 +87,11 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $volts->links() }}
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $volts->appends(request()->query())->links('component.pagination', ['items' => $volts]) }}
+                    </div>
                 </div>
             </div>
         </div>

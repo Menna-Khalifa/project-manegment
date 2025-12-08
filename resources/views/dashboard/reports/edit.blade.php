@@ -543,7 +543,7 @@
                                         @foreach ($customFields as $field)
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>{{ $field['label'] }} / {{ $field['label_ar'] }}</label>
+                                                <label>{{ $field['label'] }}</label>
                                                 @if ($field['type'] === 'textarea')
                                                     <textarea name="custom_fields[{{ $field['name'] }}]" class="form-control" rows="3"
                                                         placeholder="{{ $field['label'] }}">{{ old('custom_fields.' . $field['name'], $report->custom_fields[$field['name']] ?? '') }}</textarea>
@@ -1217,7 +1217,7 @@
                 html += `
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>${field.label} / ${field.label_ar}</label>`;
+                            <label>${field.label}</label>`;
 
                 if (field.type === 'textarea') {
                     html += `<textarea name="custom_fields[${field.name}]" 
@@ -1251,7 +1251,6 @@
                             <tr>
                                 <th style="width: 50px;">#</th>
                                 <th>Item</th>
-                                <th style="text-align: right;">العنصر</th>
                                 <th style="width: 250px; text-align: center;">Response</th>
                             </tr>
                         </thead>
@@ -1264,7 +1263,6 @@
                     <tr>
                         <td style="text-align: center;">${index + 1}</td>
                         <td>${item.en}</td>
-                        <td style="text-align: right; direction: rtl;">${item.ar}</td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="custom-control custom-radio mx-2">

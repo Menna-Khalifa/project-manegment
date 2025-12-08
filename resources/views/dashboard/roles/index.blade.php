@@ -37,10 +37,10 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table key-buttons text-md-nowrap" id="example1">
+                        <table class="table text-nowrap table-bordered border-primary">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>#</th>
                                     <th>{{ __('roles.name') }}</th>
                                     @if (auth()->user()->can('add_role') ||
                                             auth()->user()->can('show_role') ||
@@ -53,7 +53,9 @@
                             <tbody>
                                 @foreach ($roles as $key => $role)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $role->name }}</td>
                                         @if (auth()->user()->can('add_role') ||
                                                 auth()->user()->can('show_role') ||
@@ -115,6 +117,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4">
+                        {{ $roles->appends(request()->query())->links('component.pagination', ['items' => $roles]) }}
                     </div>
                 </div>
             </div>

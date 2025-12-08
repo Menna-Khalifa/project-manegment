@@ -10,4 +10,9 @@ class ProjectCapacity extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+     public function projectAmerItems()
+    {
+        return $this->hasMany(ProjectAmerItem::class);
+    }
 }
