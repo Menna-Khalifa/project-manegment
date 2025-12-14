@@ -254,7 +254,7 @@
                     </div>
 
                     <div class="mt-4">
-                        {{ $admins->links('component.pagination', ['items' => $admins]) }}
+                        {{ $admins->appends(request()->query())->links('component.pagination', ['items' => $admins]) }}
                     </div>
                 </div>
             </div>

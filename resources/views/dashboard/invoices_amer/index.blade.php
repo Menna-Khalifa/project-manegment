@@ -37,7 +37,7 @@
                                 <th>Americana Project</th>
                                 <th>Amount</th>
                                 <th>Status</th>
-                                <th>Uploaded Date</th>
+                                <th>Date</th>
                                 <th>Payment File</th>
                                 <th>Processes</th>
                             </tr>
@@ -73,7 +73,7 @@
                                             <span class="badge badge-secondary">{{ $status }}</span>
                                         @endif
                                     </td>
-                                    <td>{{ $invoice->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ $invoice->date }}</td>
                                     <td>
                                         @if ($invoice->payment_file)
                                             <a href="{{ asset('storage/' . $invoice->payment_file) }}" target="_blank" class="btn btn-sm btn-info">
@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="mt-4">
-                        {{ $invoices->links('component.pagination', ['items' => $invoices]) }}
+                        {{ $invoices->appends(request()->query())->links('component.pagination', ['items' => $invoices]) }}
                     </div>
             </div>
         </div>

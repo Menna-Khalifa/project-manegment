@@ -25,6 +25,7 @@ class InvoiceAmer extends Model
         'amount',
         'payment_file',
         'status',
+        'date',
         // 'crane',
         // 'capper_pipe',
         // 'power_cable',

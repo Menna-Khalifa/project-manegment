@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="mt-4">
-                        {{ $capacities->links('component.pagination', ['items' => $capacities]) }}
+                        {{ $capacities->appends(request()->query())->links('component.pagination', ['items' => $capacities]) }}
                     </div>
                 </div>
             </div>

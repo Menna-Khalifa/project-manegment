@@ -22,9 +22,9 @@
                     <h4 class="card-title mg-b-0">Edit: {{ $invoice->invoice_number }}</h4>
                     <div>
                         @can('show_invoice_amer')
-                        <a class="btn btn-info mr-2" href="{{ route('invoices_amer.show', $invoice->id) }}"><i
-                                class="fas fa-eye"></i> View</a>
-                                @endcan
+                            <a class="btn btn-info mr-2" href="{{ route('invoices_amer.show', $invoice->id) }}"><i
+                                    class="fas fa-eye"></i> View</a>
+                        @endcan
                         <a class="btn btn-secondary" href="{{ route('invoices_amer.index') }}"><i
                                 class="fas fa-arrow-left"></i> Back</a>
                     </div>
@@ -35,10 +35,10 @@
                         @csrf
                         <div class="form-group">
                             <label>Americana Project</label>
-                            <select name="project_amer_id" id="project_amer_id" disabled class="form-control select2" required>
+                            <select name="project_amer_id" id="project_amer_id" disabled class="form-control select2"
+                                required>
                                 @foreach ($projects as $p)
-                                    <option value="{{ $p->id }}"
-                                        data-cost="{{ $p->amount }}"
+                                    <option value="{{ $p->id }}" data-cost="{{ $p->amount }}"
                                         {{ old('project_amer_id', $invoice->project_amer_id) == $p->id ? 'selected' : '' }}>
                                         {{ $p->po_num }}
                                     </option>
@@ -56,7 +56,9 @@
                                     <h6><strong>Project Information:</strong></h6>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <strong>Total Cost:</strong> <span id="total-cost">{{ number_format($invoice->projectAmer->amount, 2) }}</span> SAR
+                                            <strong>Total Cost:</strong> <span
+                                                id="total-cost">{{ number_format($invoice->projectAmer->amount, 2) }}</span>
+                                            SAR
                                         </div>
                                     </div>
                                 </div>
@@ -73,10 +75,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="date">Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control @error('date') is-invalid @enderror" id="date"
+                                name="date" value="{{ old('date', $invoice->date) }}" required>
+                            @error('date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label>Payment Amount (SAR)</label>
-                            <input type="number" step="0.01" min="0.01"
-                                               max="{{ $invoice->projectAmer->amount }}"
-                                               placeholder="0.00" name="amount" id="amount" class="form-control"
+                            <input type="number" step="0.01" min="0.01" max="{{ $invoice->projectAmer->amount }}"
+                                placeholder="0.00" name="amount" id="amount" class="form-control"
                                 value="{{ old('amount', $invoice->amount) }}" required>
                             @error('amount')
                                 <small class="text-danger">{{ $message }}</small>
@@ -156,53 +166,55 @@
 @endsection
 
 @section('js')
-<script>
-$(document).ready(function() {
-    // Project selection change handler
-    $('#project_amer_id').on('change', function() {
-        var selectedOption = $(this).find(':selected');
-        if (selectedOption.val()) {
-            var cost = parseFloat(selectedOption.data('cost'));
+    <script>
+        $(document).ready(function() {
+            // Project selection change handler
+            $('#project_amer_id').on('change', function() {
+                var selectedOption = $(this).find(':selected');
+                if (selectedOption.val()) {
+                    var cost = parseFloat(selectedOption.data('cost'));
 
-            $('#total-cost').text(cost.toFixed(2));
+                    $('#total-cost').text(cost.toFixed(2));
 
-            $('#project-info').show();
+                    $('#project-info').show();
 
-            // Set max amount for payment
-            $('#amount').attr('max', cost.toFixed(2));
-        } else {
-            $('#project-info').hide();
-            $('#amount').attr('max', '999999.99');
-        }
-    });
+                    // Set max amount for payment
+                    $('#amount').attr('max', cost.toFixed(2));
+                } else {
+                    $('#project-info').hide();
+                    $('#amount').attr('max', '999999.99');
+                }
+            });
 
-    // Amount validation
-    $('#amount').on('input', function() {
-        var amount = parseFloat($(this).val());
-        var maxAmount = parseFloat($(this).attr('max'));
+            // Amount validation
+            $('#amount').on('input', function() {
+                var amount = parseFloat($(this).val());
+                var maxAmount = parseFloat($(this).attr('max'));
 
-        if (amount > maxAmount) {
-            $(this).addClass('is-invalid');
-            if (!$(this).next('.invalid-feedback').length) {
-                $(this).after('<div class="invalid-feedback">Amount cannot exceed total project amount</div>');
-            }
-        } else {
-            $(this).removeClass('is-invalid');
-            $(this).next('.invalid-feedback').remove();
-        }
-    });
+                if (amount > maxAmount) {
+                    $(this).addClass('is-invalid');
+                    if (!$(this).next('.invalid-feedback').length) {
+                        $(this).after(
+                            '<div class="invalid-feedback">Amount cannot exceed total project amount</div>'
+                            );
+                    }
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).next('.invalid-feedback').remove();
+                }
+            });
 
-    // Form validation before submit
-    $('form').on('submit', function(e) {
-        var amount = parseFloat($('#amount').val());
-        var maxAmount = parseFloat($('#amount').attr('max'));
+            // Form validation before submit
+            $('form').on('submit', function(e) {
+                var amount = parseFloat($('#amount').val());
+                var maxAmount = parseFloat($('#amount').attr('max'));
 
-        if (amount > maxAmount) {
-            e.preventDefault();
-            alert('Payment amount cannot exceed the total project amount.');
-            return false;
-        }
-    });
-});
-</script>
+                if (amount > maxAmount) {
+                    e.preventDefault();
+                    alert('Payment amount cannot exceed the total project amount.');
+                    return false;
+                }
+            });
+        });
+    </script>
 @endsection

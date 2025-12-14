@@ -57,12 +57,7 @@ class InvoicesAmerController extends Controller
             'invoice_number' => 'required|string|max:255|unique:invoice_amers',
             'amount' => 'required|numeric|min:0.01|max:999999.99',
             'payment_file' => 'required|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
-            // 'crane' => 'sometimes|boolean',
-            // 'capper_pipe' => 'sometimes|boolean',
-            // 'power_cable' => 'sometimes|boolean',
-            // 'amount_crane' => 'nullable|integer|min:0',
-            // 'amount_capper_pipe' => 'nullable|integer|min:0',
-            // 'amount_power_cable' => 'nullable|integer|min:0',
+            'date' => 'required|date',
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -86,12 +81,7 @@ class InvoicesAmerController extends Controller
                 'amount' => $request->amount,
                 'payment_file' => $filePath,
                 'status' => 'pending',
-                // 'crane' => (bool)$request->crane,
-                // 'capper_pipe' => (bool)$request->capper_pipe,
-                // 'power_cable' => (bool)$request->power_cable,
-                // 'amount_crane' => $request->amount_crane ?? 0,
-                // 'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
-                // 'amount_power_cable' => $request->amount_power_cable ?? 0,
+                'date' => $request->date,
                 'notes' => $request->notes,
                 'created_by' => auth()->id(),
             ]);
@@ -146,12 +136,7 @@ class InvoicesAmerController extends Controller
             'invoice_number' => 'required|string|max:255|unique:invoice_amers,invoice_number,' . $invoice->id,
             'amount' => 'required|numeric|min:0.01|max:999999.99',
             'payment_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
-            // 'crane' => 'sometimes|boolean',
-            // 'capper_pipe' => 'sometimes|boolean',
-            // 'power_cable' => 'sometimes|boolean',
-            // 'amount_crane' => 'nullable|integer|min:0',
-            // 'amount_capper_pipe' => 'nullable|integer|min:0',
-            // 'amount_power_cable' => 'nullable|integer|min:0',
+            'date' => 'required|date',
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -168,12 +153,7 @@ class InvoicesAmerController extends Controller
                 'project_amer_id' => $request->project_amer_id,
                 'invoice_number' => $request->invoice_number,
                 'amount' => $request->amount,
-                // 'crane' => (bool)$request->crane,
-                // 'capper_pipe' => (bool)$request->capper_pipe,
-                // 'power_cable' => (bool)$request->power_cable,
-                // 'amount_crane' => $request->amount_crane ?? 0,
-                // 'amount_capper_pipe' => $request->amount_capper_pipe ?? 0,
-                // 'amount_power_cable' => $request->amount_power_cable ?? 0,
+                'date' => $request->date,
                 'notes' => $request->notes,
             ];
 

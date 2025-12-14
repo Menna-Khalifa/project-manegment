@@ -118,7 +118,7 @@
                         </table>
                     </div>
                     <div class="mt-4">
-                        {{ $equipments->links('component.pagination', ['items' => $equipments]) }}
+                        {{ $equipments->appends(request()->query())->links('component.pagination', ['items' => $equipments]) }}
                     </div>
                 </div>
             </div>

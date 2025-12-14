@@ -1,7 +1,7 @@
 <!-- Title -->
 <title> @yield('title') </title>
 <!-- Favicon -->
-<link rel="icon" href="{{ URL::asset('dashboard/assets/img/brand/logo.png') }}" type="image/x-icon" />
+<link rel="icon" href="{{ URL::asset('dashboard/assets/img/brand/desktop-logo.png') }}" type="image/x-icon" />
 <!-- Icons css -->
 <link href="{{ URL::asset('dashboard/assets/css/icons.css') }}" rel="stylesheet">
 <!--  Custom Scroll bar-->

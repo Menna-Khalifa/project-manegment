@@ -117,7 +117,7 @@
                     </div>
 
                     <div class="mt-4">
-                        {{ $groups->links('component.pagination', ['items' => $groups]) }}
+                        {{ $groups->appends(request()->query())->links('component.pagination', ['items' => $groups]) }}
                     </div>
                 </div>
             </div>

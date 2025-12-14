@@ -47,6 +47,10 @@
                                             <td>{{ $invoice->invoice_number }}</td>
                                         </tr>
                                         <tr>
+                                            <td class="font-weight-bold">Date</td>
+                                            <td>{{ $invoice->date }}</td>
+                                        </tr>
+                                        <tr>
                                             <td class="font-weight-bold">Amount</td>
                                             <td>{{ number_format($invoice->amount, 2) }} SAR</td>
                                         </tr>

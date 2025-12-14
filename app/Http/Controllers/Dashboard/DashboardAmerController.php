@@ -26,13 +26,13 @@ class DashboardAmerController extends Controller
         $stats = [
             'total_brands' => Brand::count(),
             'total_stores' => Store::count(),
-            'total_projects' => ProjectAmer::whereYear('created_at', $year)->count(),
-            'total_invoices' => InvoiceAmer::whereYear('created_at', $year)->count(),
+            'total_projects' => ProjectAmer::whereYear('date', $year)->count(),
+            'total_invoices' => InvoiceAmer::whereYear('date', $year)->count(),
             'total_reports' => Report::whereYear('created_at', $year)->count(),
         ];
 
         // إحصائيات المشاريع حسب الحالة
-        $projectsByStatus = ProjectAmer::whereYear('created_at', $year)
+        $projectsByStatus = ProjectAmer::whereYear('date', $year)
             ->select('request_status', DB::raw('count(*) as count'))
             ->groupBy('request_status')
             ->get()
@@ -40,7 +40,7 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // إحصائيات المشاريع حسب الأولوية
-        $projectsByPriority = ProjectAmer::whereYear('created_at', $year)
+        $projectsByPriority = ProjectAmer::whereYear('date', $year)
             ->select('priority', DB::raw('count(*) as count'))
             ->groupBy('priority')
             ->get()
@@ -48,7 +48,7 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // إحصائيات المشاريع حسب القسم
-        $projectsByDept = ProjectAmer::whereYear('created_at', $year)
+        $projectsByDept = ProjectAmer::whereYear('date', $year)
             ->select('dept', DB::raw('count(*) as count'))
             ->groupBy('dept')
             ->get()
@@ -56,7 +56,7 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // إحصائيات المشاريع حسب المنطقة
-        $projectsByRegion = ProjectAmer::whereYear('created_at', $year)
+        $projectsByRegion = ProjectAmer::whereYear('date', $year)
             ->select('region', DB::raw('count(*) as count'))
             ->groupBy('region')
             ->get()
@@ -64,7 +64,7 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // إحصائيات الفواتير حسب الحالة
-        $invoicesByStatus = InvoiceAmer::whereYear('created_at', $year)
+        $invoicesByStatus = InvoiceAmer::whereYear('date', $year)
             ->select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
             ->get()
@@ -73,11 +73,11 @@ class DashboardAmerController extends Controller
 
         // إجمالي المبالغ المالية
         $financialStats = [
-            'total_projects_amount' => ProjectAmer::whereYear('created_at', $year)->sum('amount'),
-            'total_invoices_amount' => InvoiceAmer::whereYear('created_at', $year)->sum('amount'),
-            'paid_invoices_amount' => InvoiceAmer::whereYear('created_at', $year)
+            'total_projects_amount' => ProjectAmer::whereYear('date', $year)->sum('amount'),
+            'total_invoices_amount' => InvoiceAmer::whereYear('date', $year)->sum('amount'),
+            'paid_invoices_amount' => InvoiceAmer::whereYear('date', $year)
                 ->where('status', 'paid')->sum('amount'),
-            'pending_invoices_amount' => InvoiceAmer::whereYear('created_at', $year)
+            'pending_invoices_amount' => InvoiceAmer::whereYear('date', $year)
                 ->where('status', 'pending')->sum('amount'),
         ];
 
@@ -90,9 +90,9 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // البيانات الشهرية للمشاريع
-        $monthlyProjects = ProjectAmer::whereYear('created_at', $year)
+        $monthlyProjects = ProjectAmer::whereYear('date', $year)
             ->select(
-                DB::raw('MONTH(created_at) as month'),
+                DB::raw('MONTH(date) as month'),
                 DB::raw('count(*) as count'),
                 DB::raw('SUM(amount) as total_amount')
             )
@@ -103,9 +103,9 @@ class DashboardAmerController extends Controller
             ->toArray();
 
         // البيانات الشهرية للفواتير
-        $monthlyInvoices = InvoiceAmer::whereYear('created_at', $year)
+        $monthlyInvoices = InvoiceAmer::whereYear('date', $year)
             ->select(
-                DB::raw('MONTH(created_at) as month'),
+                DB::raw('MONTH(date) as month'),
                 DB::raw('count(*) as count'),
                 DB::raw('SUM(amount) as total_amount')
             )
@@ -129,14 +129,14 @@ class DashboardAmerController extends Controller
 
         // أحدث المشاريع
         $recentProjects = ProjectAmer::with(['store', 'user'])
-            ->whereYear('created_at', $year)
+            ->whereYear('date', $year)
             ->latest()
             ->take(10)
             ->get();
 
         // أحدث الفواتير
         $recentInvoices = InvoiceAmer::with(['projectAmer.store', 'createdBy'])
-            ->whereYear('created_at', $year)
+            ->whereYear('date', $year)
             ->latest()
             ->take(5)
             ->get();
@@ -198,9 +198,9 @@ class DashboardAmerController extends Controller
         $years = collect();
 
         // الحصول على أقدم سنة من المشاريع
-        $oldestProject = ProjectAmer::orderBy('created_at')->first();
+        $oldestProject = ProjectAmer::orderBy('date')->first();
         if ($oldestProject) {
-            $startYear = Carbon::parse($oldestProject->created_at)->year;
+            $startYear = Carbon::parse($oldestProject->date)->year;
             $currentYear = now()->year;
 
             for ($year = $currentYear; $year >= $startYear; $year--) {
@@ -219,10 +219,10 @@ class DashboardAmerController extends Controller
         $year = $request->get('year', now()->year);
 
         return response()->json([
-            'projects' => ProjectAmer::whereYear('created_at', $year)->count(),
-            'invoices' => InvoiceAmer::whereYear('created_at', $year)->count(),
+            'projects' => ProjectAmer::whereYear('date', $year)->count(),
+            'invoices' => InvoiceAmer::whereYear('date', $year)->count(),
             'reports' => Report::whereYear('created_at', $year)->count(),
-            'total_amount' => ProjectAmer::whereYear('created_at', $year)->sum('amount'),
+            'total_amount' => ProjectAmer::whereYear('date', $year)->sum('amount'),
         ]);
     }
 }
