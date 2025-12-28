@@ -28,7 +28,7 @@ class BrandsUnitController extends Controller
         try {
             $brands = Brand::typeUnit()
                 ->latest()
-                ->paginate(10);
+                ->paginate(50);
 
             return view('dashboard.brand_units.index', compact('brands'));
         } catch (\Exception $e) {

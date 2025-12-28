@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('project_amer_id')->constrained()->onDelete('cascade');
             $table->string('invoice_number')->unique();
             $table->decimal('amount', 10, 2);
-            $table->string('payment_file'); // مسار الملف المرفوع
+            $table->string('payment_file')->nullable(); // مسار الملف المرفوع
             $table->enum('status', ['paid', 'invoice_issuse', 'pending', 'canceled', 'ready_of_invoicing', 'submitted'])->default('pending');
             $table->date('date');
             $table->text('notes')->nullable();

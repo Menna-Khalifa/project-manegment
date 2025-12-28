@@ -34,7 +34,7 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('created_at', 'desc')->paginate('15');
+        $roles = Role::orderBy('created_at', 'desc')->paginate('50');
         return view('dashboard.roles.index', compact('roles'));
     }
 

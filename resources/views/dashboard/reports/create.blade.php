@@ -99,7 +99,7 @@
                                         </option>
                                         <option value="sites_refer_report"
                                             {{ old('report_type') == 'sites_refer_report' ? 'selected' : '' }}>
-                                            Sites Rever Report
+                                            Sites Refer Report
                                         </option>
                                     </select>
                                     @error('report_type')
@@ -317,7 +317,7 @@
         $(document).on('click', '.remove-unit-btn', function() {
             const unitCard = $(this).closest('.unit-card');
             unitCard.remove();
-            
+
             // إعادة ترقيم الـ units المتبقية
             renumberUnits();
         });
@@ -377,7 +377,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Type -->
                     <div class="col-md-4">
                         <div class="form-group">
@@ -390,7 +390,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Capacity -->
                     <div class="col-md-4">
                         <div class="form-group">
@@ -403,7 +403,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Model -->
                     <div class="col-md-6">
                         <div class="form-group">
@@ -416,7 +416,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Volt -->
                     <div class="col-md-6">
                         <div class="form-group">
@@ -430,7 +430,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Disconnect Switch -->
                 <div class="form-group">
                     <label>Disconnect Switch</label>
@@ -450,7 +450,7 @@
                         <div id="disconnect_${index}_preview" class="mt-2"></div>
                     </div>
                 </div>
-                
+
                 <!-- Cable -->
                 <div class="form-group">
                     <label>Cable Condition</label>
@@ -470,7 +470,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <!-- Base -->
                 <div class="form-group">
                     <label>Base Condition</label>
@@ -490,7 +490,7 @@
                         <div id="base_${index}_preview" class="mt-2"></div>
                     </div>
                 </div>
-                
+
                 <!-- Duct -->
                 <div class="form-group">
                     <label>Duct Condition</label>
@@ -510,7 +510,7 @@
                         <div id="duct_${index}_preview" class="mt-2"></div>
                     </div>
                 </div>
-                
+
                 <!-- Duct Solution -->
                 <div class="form-group">
                     <label>Duct Solution</label>
@@ -519,7 +519,7 @@
                         <option value="good">Good</option>
                     </select>
                 </div>
-                
+
                 <!-- Copper Pipe -->
                 <div class="form-group">
                     <label>Copper Pipe</label>
@@ -534,7 +534,7 @@
                         <input type="number" name="units[${index}][copper_pipe_qty]" class="form-control" min="0" step="0.01">
                     </div>
                 </div>
-                
+
                 <!-- Crane -->
                 <div class="form-group">
                     <label>Crane</label>
@@ -549,7 +549,7 @@
                         <input type="number" name="units[${index}][crane_qty]" class="form-control" min="0" step="0.01">
                     </div>
                 </div>
-                
+
                 <!-- Unit Notes -->
                 <div class="form-group">
                     <label>Unit Notes</label>
@@ -605,7 +605,7 @@
 
             if (reportType) {
                 loadReportTypeData(reportType);
-                
+
                 // Show/hide sections based on report type
                 if (reportType === 'sites_refer_report') {
                     $('#sites-refer-section').show();
@@ -750,11 +750,11 @@
                 html += `
                         <td class="text-center"><strong class="badge badge-primary">${item.qty}</strong></td>
                         <td>
-                            <input type="number" 
-                                   class="form-control form-control-sm" 
-                                   name="project_items_used[${item.id}]" 
-                                   min="0" 
-                                   max="${item.qty}" 
+                            <input type="number"
+                                   class="form-control form-control-sm"
+                                   name="project_items_used[${item.id}]"
+                                   min="0"
+                                   max="${item.qty}"
                                    value="0"
                                    placeholder="0"
                                    onchange="validateQty(this, ${item.qty})">
@@ -841,13 +841,13 @@
                             <label>${field.label}</label>`;
 
                 if (field.type === 'textarea') {
-                    html += `<textarea name="custom_fields[${field.name}]" 
-                                      class="form-control" rows="3" 
+                    html += `<textarea name="custom_fields[${field.name}]"
+                                      class="form-control" rows="3"
                                       placeholder="${field.label}"></textarea>`;
                 } else {
-                    html += `<input type="${field.type}" 
-                                    name="custom_fields[${field.name}]" 
-                                    class="form-control" 
+                    html += `<input type="${field.type}"
+                                    name="custom_fields[${field.name}]"
+                                    class="form-control"
                                     placeholder="${field.label}"
                                     ${field.type === 'number' ? 'step="any"' : ''}>`;
                 }
@@ -882,23 +882,23 @@
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="custom-control custom-radio mx-2">
-                                    <input type="radio" class="custom-control-input" 
-                                           id="item_${index}_yes" 
-                                           name="checklist_items[${index}]" 
+                                    <input type="radio" class="custom-control-input"
+                                           id="item_${index}_yes"
+                                           name="checklist_items[${index}]"
                                            value="yes" required>
                                     <label class="custom-control-label" for="item_${index}_yes">Yes</label>
                                 </div>
                                 <div class="custom-control custom-radio mx-2">
-                                    <input type="radio" class="custom-control-input" 
-                                           id="item_${index}_no" 
-                                           name="checklist_items[${index}]" 
+                                    <input type="radio" class="custom-control-input"
+                                           id="item_${index}_no"
+                                           name="checklist_items[${index}]"
                                            value="no">
                                     <label class="custom-control-label" for="item_${index}_no">No</label>
                                 </div>
                                 <div class="custom-control custom-radio mx-2">
-                                    <input type="radio" class="custom-control-input" 
-                                           id="item_${index}_na" 
-                                           name="checklist_items[${index}]" 
+                                    <input type="radio" class="custom-control-input"
+                                           id="item_${index}_na"
+                                           name="checklist_items[${index}]"
                                            value="not_available">
                                     <label class="custom-control-label" for="item_${index}_na">N/A</label>
                                 </div>

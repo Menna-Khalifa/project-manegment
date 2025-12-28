@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::user()->where('id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate('15');
+        $users = User::user()->where('id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate('50');
         $roles = Role::pluck('name', 'name')->all();
         return view('dashboard.users.index', compact('users', 'roles'));
     }

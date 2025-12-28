@@ -21,7 +21,7 @@ class ProjectCapacityController extends Controller
     public function index(Request $request)
     {
         try {
-            $capacities = ProjectCapacity::orderBy('created_at', 'desc')->paginate(15);
+            $capacities = ProjectCapacity::orderBy('created_at', 'desc')->paginate(50);
             return view('dashboard.project_capacities.index', compact('capacities'));
         } catch (\Exception $e) {
             Log::error('Error fetching capacities: ' . $e->getMessage());

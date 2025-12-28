@@ -110,7 +110,7 @@
                                 <label class="info-label">PO File</label>
                                 <div class="info-value">
                                     @if ($project_amer->po_file)
-                                        <a href="{{ asset('storage/' . $project_amer->po_file) }}" target="_blank"
+                                        <a href="{{ asset('uploads/' . $project_amer->po_file) }}" target="_blank"
                                             class="btn btn-outline-info btn-sm">View</a>
                                     @else
                                         -

@@ -28,7 +28,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admins = User::admin()->where('id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate('15');
+        $admins = User::admin()->where('id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->paginate('50');
         $roles = Role::pluck('name', 'name')->all();
         return view('dashboard.admins.index', compact('admins', 'roles'));
     }

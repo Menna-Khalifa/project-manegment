@@ -16,7 +16,7 @@ class ProjectTypeController extends Controller
         $this->middleware('check.permission:add_project_type', ['only' => ['create', 'store']]);
         $this->middleware('check.permission:edit_project_type', ['only' => ['edit', 'update']]);
         $this->middleware('check.permission:delete_project_type', ['only' => ['destroy']]);
-        
+
         $this->middleware('check.permission:project_type_maintenances_list', ['only' => ['maintenanceIndex']]);
         $this->middleware('check.permission:add_project_type_maintenance', ['only' => ['maintenanceCreate', 'store']]);
         $this->middleware('check.permission:edit_project_type_maintenance', ['only' => ['maintenanceEdit', 'update']]);
@@ -26,14 +26,14 @@ class ProjectTypeController extends Controller
     public function index(Request $request)
     {
         try {
-            $types = ProjectType::where('type', 'project')->orderBy('created_at', 'desc')->paginate(15);
+            $types = ProjectType::where('type', 'project')->orderBy('created_at', 'desc')->paginate(50);
             return view('dashboard.project_types.index', compact('types'));
         } catch (\Exception $e) {
             Log::error('Error fetching project types: ' . $e->getMessage());
             return back()->with('error', 'حدث خطأ أثناء استرداد الأنواع.');
         }
     }
-    
+
     public function maintenanceIndex(Request $request)
     {
         try {
@@ -54,7 +54,7 @@ class ProjectTypeController extends Controller
             return back()->with('error', 'حدث خطأ أثناء تحميل نموذج الإنشاء.');
         }
     }
-    
+
     public function maintenanceCreate()
     {
         try {

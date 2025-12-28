@@ -27,7 +27,7 @@ class ProjectAmerController extends Controller
         $this->middleware('check.permission:show_project_amers', ['only' => ['show']]);
         $this->middleware('check.permission:edit_project_amers', ['only' => ['edit', 'update']]);
         $this->middleware('check.permission:delete_project_amers', ['only' => ['destroy']]);
-        $this->middleware('check.permission:download_project_amers', ['only' => ['downloadServiceCompletionPDF']]);
+        $this->middleware('check.permission:download_project_amers', ['only' => ['downloadServiceCompletionPDF', 'downloadReleaseUnitPDF']]);
     }
     /**
      * Display a listing of the resource.
@@ -58,6 +58,11 @@ class ProjectAmerController extends Controller
                 $query->byPriority($request->priority);
             }
 
+            // Filter by year
+            if ($request->filled('year')) {
+                $query->byYear($request->year);
+            }
+
             // Filter by PO number
             if ($request->filled('po_num')) {
                 $query->where('po_num', 'like', '%' . $request->po_num . '%');
@@ -68,7 +73,7 @@ class ProjectAmerController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projects = $query->paginate(10);
+            $projects = $query->paginate(50);
 
             return view('dashboard.project_amers.index', compact('projects'));
         } catch (\Exception $e) {
@@ -121,7 +126,7 @@ class ProjectAmerController extends Controller
 
             if ($request->hasFile('po_file')) {
                 $fileName = time() . '_' . uniqid() . '.' . $request->file('po_file')->getClientOriginalExtension();
-                $filePath = $request->file('po_file')->storeAs('project_amer', $fileName, 'public');
+                $filePath = $request->file('po_file')->storeAs('project_files', $fileName, 'media');
 
                 $validatedData['po_file'] = $filePath;
             }
@@ -237,11 +242,11 @@ class ProjectAmerController extends Controller
             if ($request->hasFile('po_file')) {
                 // Delete old file
                 if ($project_amer->po_file) {
-                    Storage::disk('public')->delete($project_amer->po_file);
+                    Storage::disk('media')->delete($project_amer->po_file);
                 }
 
                 // Upload new file
-                $validatedData['po_file'] = $request->file('po_file')->store('project_amer', 'public');
+                $validatedData['po_file'] = $request->file('po_file')->store('project_files', 'media');
             }
 
             $project_amer->update($validatedData);
@@ -295,7 +300,7 @@ class ProjectAmerController extends Controller
 
             // Delete old file
             if ($project_amer->po_file) {
-                Storage::disk('public')->delete($project_amer->po_file);
+                Storage::disk('media')->delete($project_amer->po_file);
             }
 
             $project_amer->delete();
@@ -344,6 +349,70 @@ class ProjectAmerController extends Controller
             Log::error('Error downloading service completion PDF: ' . $e->getMessage());
             notify('حدث خطأ أثناء تحميل ملف PDF.', 'error');
             return back();
+        }
+    }
+
+    /**
+     * Download Release Unit Form as PDF
+     */
+    public function downloadReleaseUnitPDF(ProjectAmer $project_amer)
+    {
+        try {
+            // Load relationships
+            $project_amer->load([
+                'user',
+                'store',
+                'items.projectType',
+                'items.projectModel',
+                'items.projectCapacity',
+                'items.projectVolt',
+                'items.brand',
+            ]);
+
+            // dd($project_amer->items);
+
+            // Generate PDF using service completion view
+            $pdf = app('dompdf.wrapper')->loadView('dashboard.report_pdf.release_unit', compact('project_amer'));
+
+            // Set paper size and orientation
+            $pdf->setPaper('a4', 'portrait');
+
+            // Generate filename
+            $filename = 'release_unit_' . $project_amer->po_num . '_' . date('Y-m-d') . '.pdf';
+
+            // Download the PDF
+            return $pdf->download($filename);
+        } catch (\Exception $e) {
+            Log::error('Error downloading release unit PDF: ' . $e->getMessage());
+            notify('حدث خطأ أثناء تحميل ملف PDF.', 'error');
+            return back();
+        }
+    }
+    /**
+     * Get store details via AJAX
+     */
+    public function getStoreDetails($id)
+    {
+        try {
+            $store = Store::find($id);
+            if (!$store) {
+                return response()->json(['success' => false, 'message' => 'Store not found'], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'name' => $store->name,
+                    'email' => $store->email,
+                    'phone' => $store->phone,
+                    'city' => $store->city,
+                    'address' => $store->address,
+                    'uuid' => $store->uuid
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching store details: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Internal server error'], 500);
         }
     }
 }

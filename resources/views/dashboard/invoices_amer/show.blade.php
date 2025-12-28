@@ -113,7 +113,7 @@
                                     <div class="card-body text-center">
                                         <i class="fas fa-file-alt fa-5x text-primary mb-3"></i>
                                         <p class="mb-2"><strong>{{ basename($invoice->payment_file) }}</strong></p>
-                                        <a href="{{ asset('storage/' . $invoice->payment_file) }}" target="_blank"
+                                        <a href="{{ asset('uploads/' . $invoice->payment_file) }}" target="_blank"
                                             class="btn btn-outline-primary btn-sm">
                                             <i class="fas fa-eye"></i> View File
                                         </a>

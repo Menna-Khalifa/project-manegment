@@ -31,7 +31,7 @@ class ProjectInvoicesController extends Controller
     {
         $invoices = ProjectInvoice::with(['project', 'approvedBy'])
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(50);
 
         return view('dashboard.project-invoices.index', compact('invoices'));
     }

@@ -57,6 +57,11 @@ class ProjectAmer extends Model
         return $query->where('request_status', $status);
     }
 
+    public function scopeByYear($query, $year)
+    {
+        return $query->whereYear('date', $year);
+    }
+
     public function scopeByPriority($query, $priority)
     {
         return $query->where('priority', $priority);
@@ -66,7 +71,7 @@ class ProjectAmer extends Model
     {
         return $this->hasMany(ProjectAmerItem::class);
     }
-    
+
     public function invoice()
     {
         return $this->HasOne(InvoiceAmer::class);

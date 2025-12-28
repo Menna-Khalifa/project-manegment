@@ -62,6 +62,21 @@
             height: 8px;
         }
 
+        .total-revenue a {
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .total-revenue a:hover {
+            text-decoration: none;
+            opacity: 0.7;
+            transform: translateX(5px);
+        }
+
+        .total-revenue label {
+            cursor: pointer;
+        }
+
         .table th {
             font-weight: 600;
             font-size: 13px;
@@ -334,7 +349,8 @@
                             $totalProjects = array_sum($projectsByStatus) ?: 1;
                         @endphp
                         @foreach ($projectsByStatus as $status => $count)
-                            <div class="mb-3">
+                            <a href="{{ route('project_amers.index', ['request_status' => $status, 'year' => $year]) }}"
+                                class="d-block" style="margin: 1rem !important;">
                                 <div class="d-flex justify-content-between mb-1">
                                     <label><span
                                             class="bg-{{ $statusColors[$status] ?? 'primary' }}"></span>{{ $statusLabels[$status] ?? $status }}</label>
@@ -344,7 +360,7 @@
                                     <div class="progress-bar bg-{{ $statusColors[$status] ?? 'primary' }}"
                                         style="width: {{ ($count / $totalProjects) * 100 }}%"></div>
                                 </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -376,7 +392,8 @@
                             $totalPriority = array_sum($projectsByPriority) ?: 1;
                         @endphp
                         @foreach ($projectsByPriority as $priority => $count)
-                            <div class="mb-3">
+                            <a href="{{ route('project_amers.index', ['priority' => $priority, 'year' => $year]) }}"
+                                class="d-block" style="margin: 1rem !important;">
                                 <div class="d-flex justify-content-between mb-1">
                                     <label><span
                                             class="bg-{{ $priorityColors[$priority] ?? 'primary' }}"></span>{{ $priorityLabels[$priority] ?? $priority }}</label>
@@ -386,7 +403,7 @@
                                     <div class="progress-bar bg-{{ $priorityColors[$priority] ?? 'primary' }}"
                                         style="width: {{ ($count / $totalPriority) * 100 }}%"></div>
                                 </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -464,48 +481,48 @@
                     <span class="fs-12 text-muted mb-3">Last 10 projects added</span>
                 </div>
                 <div class="card-body p-0">
-                <div class="table-responsive country-table">
-                    <table class="table table-striped table-bordered mb-0 text-nowrap">
-                        <thead>
-                            <tr>
-                                <th class="wd-lg-25p">PO Number</th>
-                                <th class="wd-lg-25p">Store</th>
-                                <th class="wd-lg-25p">Amount</th>
-                                <th class="wd-lg-25p">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentProjects as $project)
+                    <div class="table-responsive country-table">
+                        <table class="table table-striped table-bordered mb-0 text-nowrap">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <span class="font-weight-semibold">{{ $project->po_num }}</span>
-                                    </td>
-                                    <td class="fw-medium">{{ $project->store->name ?? '-' }}</td>
-                                    <td class="fw-medium">{{ number_format($project->amount, 2) }} SAR</td>
-                                    <td class="fw-medium">
-                                        @php
-                                            $statusBadge = [
-                                                'new_order' => 'badge-primary',
-                                                'under_working' => 'badge-warning',
-                                                'completed' => 'badge-success',
-                                                'cancelled' => 'badge-danger',
-                                                'on_hold' => 'badge-secondary',
-                                            ];
-                                        @endphp
-                                        <span
-                                            class="badge {{ $statusBadge[$project->request_status] ?? 'badge-primary' }}">
-                                            {{ $statusLabels[$project->request_status] ?? $project->request_status }}
-                                        </span>
-                                    </td>
+                                    <th class="wd-lg-25p">PO Number</th>
+                                    <th class="wd-lg-25p">Store</th>
+                                    <th class="wd-lg-25p">Amount</th>
+                                    <th class="wd-lg-25p">Status</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted py-4">No projects available</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @forelse($recentProjects as $project)
+                                    <tr>
+                                        <td>
+                                            <span class="font-weight-semibold">{{ $project->po_num }}</span>
+                                        </td>
+                                        <td class="fw-medium">{{ $project->store->name ?? '-' }}</td>
+                                        <td class="fw-medium">{{ number_format($project->amount, 2) }} SAR</td>
+                                        <td class="fw-medium">
+                                            @php
+                                                $statusBadge = [
+                                                    'new_order' => 'badge-primary',
+                                                    'under_working' => 'badge-warning',
+                                                    'completed' => 'badge-success',
+                                                    'cancelled' => 'badge-danger',
+                                                    'on_hold' => 'badge-secondary',
+                                                ];
+                                            @endphp
+                                            <span
+                                                class="badge {{ $statusBadge[$project->request_status] ?? 'badge-primary' }}">
+                                                {{ $statusLabels[$project->request_status] ?? $project->request_status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">No projects available</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -516,7 +533,7 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header pb-1">
-                    <h3 class="card-title mb-2">Top Brands (Number of Projects)</h3>
+                    <h3 class="card-title mb-2">Top 5 Brands (Number of Projects)</h3>
                     <p class="tx-12 text-muted mb-0">Top Brands by number of projects</p>
                 </div>
                 <div class="card-body p-0">
@@ -540,7 +557,7 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header pb-1">
-                    <h3 class="card-title mb-2">Top Brands (Total Project Amount)</h3>
+                    <h3 class="card-title mb-2">Top 5 Brands (Total Project Amount)</h3>
                     <p class="tx-12 text-muted mb-0">Top brands by total project amount</p>
                 </div>
                 <div class="card-body p-0">

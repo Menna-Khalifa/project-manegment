@@ -426,7 +426,7 @@ Route::get('import_others', function () {
             }
 
             // إنشاء المجلد
-            $fullPath = storage_path('app/public/' . $directory);
+            $fullPath = public_path('uploads/' . $directory);
             if (!file_exists($fullPath)) {
                 mkdir($fullPath, 0755, true);
             }
@@ -817,13 +817,14 @@ Route::get('import_others', function () {
 
                         // إنشاء الفاتورة إذا كانت موجودة ولم يتم معالجتها من قبل
                         if (!empty($Invoice) && !isset($processedInvoices[$Invoice])) {
-                            // $invoiceFilePath = $Invoice_copy;
                             $invoiceFilePath = null;
                             if (!empty($Invoice_copy)) {
                                 $invoiceFilePath = $downloadFileFromUrl($Invoice_copy, 'invoice_files', 'invoice');
+                            } else {
+                                $invoiceFilePath = $Invoice_copy;
                             }
 
-                            if ($invoiceFilePath == null) {
+                            if ($invoiceFilePath) {
                                 // التحقق من عدم وجود الفاتورة في قاعدة البيانات
                                 $existingInvoice = Illuminate\Support\Facades\DB::table('invoice_amers')
                                     ->where('invoice_number', $Invoice)
@@ -904,7 +905,7 @@ Route::get('import_compressors', function () {
             }
 
             // إنشاء المجلد
-            $fullPath = storage_path('app/public/' . $directory);
+            $fullPath = public_path('uploads/' . $directory);
             if (!file_exists($fullPath)) {
                 mkdir($fullPath, 0755, true);
             }
@@ -1301,9 +1302,11 @@ Route::get('import_compressors', function () {
                             $invoiceFilePath = null;
                             if (!empty($Invoice_copy)) {
                                 $invoiceFilePath = $downloadFileFromUrl($Invoice_copy, 'invoice_files', 'invoice');
+                            } else {
+                                $invoiceFilePath = $Invoice_copy;
                             }
 
-                            if ($invoiceFilePath == null) {
+                            if ($invoiceFilePath) {
                                 // التحقق من عدم وجود الفاتورة في قاعدة البيانات
                                 $existingInvoice = Illuminate\Support\Facades\DB::table('invoice_amers')
                                     ->where('invoice_number', $Invoice)
@@ -1385,7 +1388,7 @@ Route::get('import_masters', function () {
             }
 
             // إنشاء المجلد
-            $fullPath = storage_path('app/public/' . $directory);
+            $fullPath = public_path('uploads/' . $directory);
             if (!file_exists($fullPath)) {
                 mkdir($fullPath, 0755, true);
             }
@@ -1492,7 +1495,7 @@ Route::get('import_masters', function () {
         if (stripos($deptLower, 'facility') !== false) return 'facility';
         if (stripos($deptLower, 'maintenance') !== false) {
             if (stripos($deptLower, 'replacing') !== false) return 'maintenance_replacing';
-            return 'maintenance';
+            return 'maintenance_replacing';
         }
         if (stripos($deptLower, 'other') !== false) return 'other';
         return 'project';
@@ -1809,9 +1812,11 @@ Route::get('import_masters', function () {
                             $invoiceFilePath = null;
                             if (!empty($Invoice_copy)) {
                                 $invoiceFilePath = $downloadFileFromUrl($Invoice_copy, 'invoice_files', 'invoice');
+                            } else {
+                                $invoiceFilePath = $Invoice_copy;
                             }
 
-                            if ($invoiceFilePath == null) {
+                            if ($invoiceFilePath) {
                                 // التحقق من عدم وجود الفاتورة في قاعدة البيانات
                                 $existingInvoice = Illuminate\Support\Facades\DB::table('invoice_amers')
                                     ->where('invoice_number', $Invoice)
@@ -1901,8 +1906,6 @@ Route::get('test-pdf-download', function () {
     $size = filesize(storage_path('app/public/test.pdf'));
     return "Downloaded! Size: {$size} bytes - Check storage/app/public/test.pdf";
 });
-
-
 
 Route::get('view_report', function () {
     // return view('dashboard.report_pdf.invoices');
@@ -2127,6 +2130,8 @@ Route::group([
         Route::post('{project_amer}/update', 'update')->name('project_amers.update');
         Route::post('{project_amer}/destroy', 'destroy')->name('project_amers.destroy');
         Route::get('{project_amer}/download-service-completion', 'downloadServiceCompletionPDF')->name('project_amers.download_service_completion');
+        Route::get('{project_amer}/download-release-unit', 'downloadReleaseUnitPDF')->name('project_amers.download_release_unit');
+        Route::get('/get-store-details/{id}', 'getStoreDetails')->name('project_amers.get_store_details');
     });
 
     // Project Types routes

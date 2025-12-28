@@ -69,7 +69,8 @@
                                     </option>
                                     <option value="facility" {{ request('dept') === 'facility' ? 'selected' : '' }}>
                                         Facility</option>
-                                    <option value="maintenance_replacing" {{ request('dept') === 'maintenance_replacing' ? 'selected' : '' }}>
+                                    <option value="maintenance_replacing"
+                                        {{ request('dept') === 'maintenance_replacing' ? 'selected' : '' }}>
                                         Maintenance / Replacing</option>
                                     <option value="maintenance" {{ request('dept') === 'maintenance' ? 'selected' : '' }}>
                                         Maintenance / Maintenance</option>
@@ -95,6 +96,18 @@
                                 <label>PO Number</label>
                                 <input type="text" class="form-control" name="po_num" value="{{ request('po_num') }}"
                                     placeholder="Search by PO number">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Year</label>
+                                <select class="form-control" name="year">
+                                    <option value="">All Years</option>
+                                    @for ($year = 2024; $year <= date('Y'); $year++)
+                                        <option value="{{ $year }}"
+                                            {{ request('year') === (string) $year ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endfor
+                                </select>
                             </div>
                             <div class="col-md-2">
                                 <label>&nbsp;</label>
@@ -199,7 +212,7 @@
                                         <td>{{ number_format($project->amount, 2) }}</td>
                                         <td>
                                             @if ($project->po_file)
-                                                <a href="{{ asset('storage/' . $project->po_file) }}" target="_blank"
+                                                <a href="{{ asset('uploads/' . $project->po_file) }}" target="_blank"
                                                     class="btn btn-sm btn-outline-info">View</a>
                                             @else
                                                 -
@@ -222,6 +235,11 @@
                                                                 class="dropdown-item">
                                                                 <i class="text-warning fa fa-download"></i>&nbsp;&nbsp; تحميل
                                                                 Service Completion
+                                                            </a>
+                                                            <a href="{{ route('project_amers.download_release_unit', $project->id) }}"
+                                                                class="dropdown-item">
+                                                                <i class="text-warning fa fa-download"></i>&nbsp;&nbsp; تحميل
+                                                                Release Unit
                                                             </a>
                                                         @endcan
                                                         @can('show_project_amers')

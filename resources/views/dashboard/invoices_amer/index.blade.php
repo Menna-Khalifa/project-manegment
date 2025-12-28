@@ -76,7 +76,7 @@
                                     <td>{{ $invoice->date }}</td>
                                     <td>
                                         @if ($invoice->payment_file)
-                                            <a href="{{ asset('storage/' . $invoice->payment_file) }}" target="_blank" class="btn btn-sm btn-info">
+                                            <a href="{{ asset('uploads/' . $invoice->payment_file) }}" target="_blank" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i> View File
                                             </a>
                                         @else

@@ -27,7 +27,7 @@ class SectionItemsController extends Controller
     public function index()
     {
         try {
-            $section_items = SectionItem::orderBy('created_at', 'desc')->paginate('15');
+            $section_items = SectionItem::orderBy('created_at', 'desc')->paginate('50');
             return view('dashboard.section_items.index', compact('section_items'));
         } catch (\Exception $e) {
             Log::error('Error in SectionsController@index: ' . $e->getMessage());

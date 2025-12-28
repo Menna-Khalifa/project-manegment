@@ -31,7 +31,7 @@ class InvoicesAmerController extends Controller
     {
         $invoices = InvoiceAmer::with(['projectAmer', 'approvedBy', 'createdBy'])
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(50);
 
         $availableStatuses = \App\Models\InvoiceAmer::STATUSES;
         return view('dashboard.invoices_amer.index', compact('invoices', 'availableStatuses'));
@@ -73,7 +73,7 @@ class InvoicesAmerController extends Controller
 
         try {
             $fileName = time() . '_' . uniqid() . '.' . $request->file('payment_file')->getClientOriginalExtension();
-            $filePath = $request->file('payment_file')->storeAs('invoices_amer', $fileName, 'public');
+            $filePath = $request->file('payment_file')->storeAs('invoice_files', $fileName, 'media');
 
             InvoiceAmer::create([
                 'project_amer_id' => $request->project_amer_id,
@@ -159,10 +159,10 @@ class InvoicesAmerController extends Controller
 
             if ($request->hasFile('payment_file')) {
                 if ($invoice->payment_file) {
-                    Storage::disk('public')->delete($invoice->payment_file);
+                    Storage::disk('media')->delete($invoice->payment_file);
                 }
 
-                $updateData['payment_file'] = $request->file('payment_file')->store('invoices_amer', 'public');
+                $updateData['payment_file'] = $request->file('payment_file')->store('invoice_files', 'public');
             }
 
             if ($invoice->status !== 'pending' && $invoice->amount != $request->amount) {
@@ -193,7 +193,7 @@ class InvoicesAmerController extends Controller
             $invoice = InvoiceAmer::findOrFail($id);
 
             if ($invoice->payment_file) {
-                Storage::disk('public')->delete($invoice->payment_file);
+                Storage::disk('media')->delete($invoice->payment_file);
             }
 
             $invoice->delete();

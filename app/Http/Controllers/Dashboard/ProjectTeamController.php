@@ -57,7 +57,7 @@ class ProjectTeamController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projectTeams = $query->paginate(15);
+            $projectTeams = $query->paginate(50);
             $projects = Project::all(['id', 'name']);
             $users = User::user()->select(['id', 'name', 'phone'])->get();
 

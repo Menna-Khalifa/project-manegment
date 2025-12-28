@@ -60,7 +60,7 @@ class ProjectController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projects = $query->paginate(15);
+            $projects = $query->paginate(50);
 
             return view('dashboard.projects.index', compact('projects'));
         } catch (\Exception $e) {

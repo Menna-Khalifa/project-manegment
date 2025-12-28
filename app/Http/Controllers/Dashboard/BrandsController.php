@@ -28,7 +28,7 @@ class BrandsController extends Controller
         try {
             $brands = Brand::typeStore()
                 ->latest()
-                ->paginate(10);
+                ->paginate(50);
 
             return view('dashboard.brands.index', compact('brands'));
         } catch (\Exception $e) {

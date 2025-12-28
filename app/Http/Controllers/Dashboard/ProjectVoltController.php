@@ -21,7 +21,7 @@ class ProjectVoltController extends Controller
     public function index(Request $request)
     {
         try {
-            $volts = ProjectVolt::orderBy('created_at', 'desc')->paginate(15);
+            $volts = ProjectVolt::orderBy('created_at', 'desc')->paginate(50);
             return view('dashboard.project_volts.index', compact('volts'));
         } catch (\Exception $e) {
             Log::error('Error fetching volts: ' . $e->getMessage());

@@ -150,11 +150,12 @@ class DashboardAmerController extends Controller
 
         // أعلى 5 علامات من حيث عدد المشاريع
         $topBrandsByProjects = Brand::select('brands.*')
+            ->where('brands.type', 'store')
             ->join('stores', 'brands.id', '=', 'stores.brand_id')
             ->join('project_amers', 'stores.id', '=', 'project_amers.store_id')
-            ->whereYear('project_amers.created_at', $year)
+            ->whereYear('project_amers.date', $year)
             ->selectRaw('COUNT(DISTINCT project_amers.id) as project_amers_count')
-            ->groupBy('brands.id', 'brands.name', 'brands.description', 'brands.created_at', 'brands.updated_at')
+            ->groupBy('brands.id', 'brands.name', 'brands.description', 'brands.type', 'brands.created_at', 'brands.updated_at')
             ->having('project_amers_count', '>', 0)
             ->orderByDesc('project_amers_count')
             ->take(5)
@@ -162,11 +163,12 @@ class DashboardAmerController extends Controller
 
         // أعلى 5 علامات من حيث قيمة المشاريع
         $topBrandsByAmount = Brand::select('brands.*')
+            ->where('brands.type', 'store')
             ->join('stores', 'brands.id', '=', 'stores.brand_id')
             ->join('project_amers', 'stores.id', '=', 'project_amers.store_id')
-            ->whereYear('project_amers.created_at', $year)
+            ->whereYear('project_amers.date', $year)
             ->selectRaw('SUM(project_amers.amount) as total_amount')
-            ->groupBy('brands.id', 'brands.name', 'brands.description', 'brands.created_at', 'brands.updated_at')
+            ->groupBy('brands.id', 'brands.name', 'brands.description', 'brands.type', 'brands.created_at', 'brands.updated_at')
             ->orderByDesc('total_amount')
             ->take(5)
             ->get();

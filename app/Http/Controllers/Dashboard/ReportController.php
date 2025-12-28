@@ -31,7 +31,7 @@ class ReportController extends Controller
 
     public function index()
     {
-        $reports = Report::with(['creator', 'store', 'projectAmer'])->orderBy('created_at', 'desc')->paginate(15);
+        $reports = Report::with(['creator', 'store', 'projectAmer'])->orderBy('created_at', 'desc')->paginate(50);
         return view('dashboard.reports.index', compact('reports'));
     }
 
@@ -39,7 +39,7 @@ class ReportController extends Controller
     {
         $stores = Store::orderBy('name')->get();
         $projects = ProjectAmer::orderBy('po_num')->get();
-        $brands = Brand::orderBy('name')->get();
+        $brands = Brand::typeUnit()->orderBy('name')->get();
         $types = ProjectType::orderBy('name')->get();
         $capacities = ProjectCapacity::orderBy('name')->get();
         $models = ProjectModel::orderBy('name')->get();

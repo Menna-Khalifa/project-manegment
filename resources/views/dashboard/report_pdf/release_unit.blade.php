@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Service Completion</title>
+    <title>Release Unit</title>
     <style>
         * {
             margin: 0;
@@ -149,7 +149,7 @@
             <img src="{{ public_path('dashboard/assets/img/brand/desktop-logo.png') }}" alt="Logo" class="logo">
         </div>
 
-        <h1 class="title">Service Completion</h1>
+        <h1 class="title">Release Unit</h1>
 
         <table class="info-table">
             <tr>

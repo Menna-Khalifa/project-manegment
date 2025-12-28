@@ -18,11 +18,11 @@ class ProjectModelController extends Controller
         $this->middleware('check.permission:edit_project_model', ['only' => ['edit', 'update']]);
         $this->middleware('check.permission:delete_project_model', ['only' => ['destroy']]);
     }
-    
+
     public function index(Request $request)
     {
         try {
-            $models = ProjectModel::with('projectType')->orderBy('created_at', 'desc')->paginate(15);
+            $models = ProjectModel::with('projectType')->orderBy('created_at', 'desc')->paginate(50);
             return view('dashboard.project_models.index', compact('models'));
         } catch (\Exception $e) {
             Log::error('Error fetching models: ' . $e->getMessage());

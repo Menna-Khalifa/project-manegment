@@ -61,7 +61,7 @@ class ProjectEquipmentController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projectEquipment = $query->paginate(15);
+            $projectEquipment = $query->paginate(50);
             $projects = Project::all(['id', 'name']);
             $equipment = Equipment::all(['id', 'name']);
 
@@ -205,7 +205,7 @@ class ProjectEquipmentController extends Controller
         } catch (\Exception $e) {
             Log::error('Error updating project equipment: ' . $e->getMessage());
 
-            
+
             notify('An error occurred while updating the project equipment.', 'error');
 
             return back();

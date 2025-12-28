@@ -70,7 +70,7 @@ class ProjectItemController extends Controller
             $sortDirection = $request->get('sort_direction', 'desc');
             $query->orderBy($sortBy, $sortDirection);
 
-            $projectItems = $query->paginate('15');
+            $projectItems = $query->paginate('50');
             $projects = Project::all(['id', 'name']);
             $sections = Section::all(['id', 'name']);
 
