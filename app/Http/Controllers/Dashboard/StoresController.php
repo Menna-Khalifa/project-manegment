@@ -25,11 +25,41 @@ class StoresController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
         try {
-            $stores = Store::orderBy('created_at', 'desc')->paginate('50');
-            return view('dashboard.stores.index', compact('stores'));
+            $query = Store::query();
+
+            // Filter by search (name, email, phone, uuid)
+            if ($request->filled('search')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%')
+                        ->orWhere('email', 'like', '%' . $request->search . '%')
+                        ->orWhere('phone', 'like', '%' . $request->search . '%')
+                        ->orWhere('uuid', 'like', '%' . $request->search . '%');
+                });
+            }
+
+            // Filter by brand
+            if ($request->filled('brand_id')) {
+                $query->where('brand_id', $request->brand_id);
+            }
+
+            // Filter by location
+            if ($request->filled('country')) {
+                $query->where('country', 'like', '%' . $request->country . '%');
+            }
+            if ($request->filled('city')) {
+                $query->where('city', 'like', '%' . $request->city . '%');
+            }
+            if ($request->filled('state')) {
+                $query->where('state', 'like', '%' . $request->state . '%');
+            }
+
+            $stores = $query->orderBy('created_at', 'desc')->paginate('50');
+            $brands = Brand::typeStore()->get();
+
+            return view('dashboard.stores.index', compact('stores', 'brands'));
         } catch (\Exception $e) {
             Log::error('Error in StoresController@index: ' . $e->getMessage());
             return redirect()->back()->with('error', 'حدث خطأ أثناء عرض المتاجر');
@@ -41,7 +71,7 @@ class StoresController extends Controller
      */
     public function create()
     {
-        $brands = Brand::all();
+        $brands = Brand::typeStore()->get();
         return view('dashboard.stores.create', compact('brands'));
     }
 
@@ -90,7 +120,7 @@ class StoresController extends Controller
      */
     public function edit(Store $store)
     {
-        $brands = Brand::all();
+        $brands = Brand::typeStore()->get();
         return view('dashboard.stores.edit', compact('store', 'brands'));
     }
 

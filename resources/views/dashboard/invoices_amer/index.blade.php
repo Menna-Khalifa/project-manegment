@@ -17,6 +17,92 @@
 @section('content')
 <div class="row row-sm">
     <div class="col-xl-12">
+        <!-- Filter Card -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Filters</h5>
+    </div>
+    <div class="card-body">
+        <form method="GET" action="{{ route('invoices_amer.index') }}">
+            <div class="row">
+
+                {{-- Status --}}
+                <div class="col-md-3">
+                    <label>Status</label>
+                    <select class="form-control" name="status">
+                        <option value="">All Statuses</option>
+                        @foreach ($availableStatuses as $status)
+                            <option value="{{ $status }}" {{ request('status') === $status ? 'selected' : '' }}>
+                                {{ ucfirst(str_replace('_', ' ', $status)) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Store Name --}}
+                <div class="col-md-3">
+                    <label>Store Name</label>
+                    <input type="text" class="form-control" name="store_name"
+                        value="{{ request('store_name') }}" placeholder="Search by store name">
+                </div>
+
+                {{-- PO / Invoice Number --}}
+                <div class="col-md-3">
+                    <label>PO / Invoice Number</label>
+                    <input type="text" class="form-control" name="search"
+                        value="{{ request('search') }}" placeholder="Search by PO or invoice number">
+                </div>
+
+                {{-- Date From --}}
+                <div class="col-md-3">
+                    <label>Date From</label>
+                    <input type="date" class="form-control" name="date_from"
+                        value="{{ request('date_from') }}">
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+
+                {{-- Date To --}}
+                <div class="col-md-3">
+                    <label>Date To</label>
+                    <input type="date" class="form-control" name="date_to"
+                        value="{{ request('date_to') }}">
+                </div>
+
+                {{-- Amount From --}}
+                <div class="col-md-3">
+                    <label>Amount From</label>
+                    <input type="number" class="form-control" name="amount_from"
+                        value="{{ request('amount_from') }}" placeholder="Min amount" step="0.01">
+                </div>
+
+                {{-- Amount To --}}
+                <div class="col-md-3">
+                    <label>Amount To</label>
+                    <input type="number" class="form-control" name="amount_to"
+                        value="{{ request('amount_to') }}" placeholder="Max amount" step="0.01">
+                </div>
+
+                {{-- Buttons --}}
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <div>
+                        <a href="{{ route('invoices_amer.index') }}" class="btn btn-secondary btn-block">Clear</a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
         <div class="card">
             @can('add_invoice_amer')
             <div class="card-header pb-0">
@@ -33,8 +119,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>PO Project</th>
+                                <th>Store Name</th>
                                 <th>Invoice Number</th>
-                                <th>Americana Project</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Date</th>
@@ -48,10 +135,11 @@
                                        <td>
                                             {{ ($invoices->currentPage() - 1) * $invoices->perPage() + $loop->iteration }}
                                         </td>
-                                    <td>{{ $invoice->invoice_number }}</td>
                                     <td>
                                         <strong>{{ $invoice->projectAmer->po_num ?? ('#' . $invoice->projectAmer->id) }}</strong>
                                     </td>
+                                    <td>{{ $invoice->projectAmer->store->name }}</td>
+                                    <td>{{ $invoice->invoice_number }}</td>
                                     <td><strong>{{ number_format($invoice->amount, 2) }} SAR</strong></td>
                                     <td>
                                         @php

@@ -2128,7 +2128,6 @@ Route::group([
         Route::post('/store', 'store')->name('project_amers.store');
         Route::get('{project_amer}/edit', 'edit')->name('project_amers.edit');
         Route::post('{project_amer}/update', 'update')->name('project_amers.update');
-        Route::post('{project_amer}/update-status-priority', 'updateStatusPriority')->name('project_amers.update_status_priority');
         Route::post('{project_amer}/destroy', 'destroy')->name('project_amers.destroy');
         Route::get('{project_amer}/download-service-completion', 'downloadServiceCompletionPDF')->name('project_amers.download_service_completion');
         Route::get('{project_amer}/download-release-unit', 'downloadReleaseUnitPDF')->name('project_amers.download_release_unit');

@@ -110,23 +110,13 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label>Invoice</label>
-                                <select class="form-control" name="has_invoice">
-                                    <option value="">All</option>
-                                    <option value="yes" {{ request('has_invoice') === 'yes' ? 'selected' : '' }}>Has
-                                        Invoice</option>
-                                    <option value="no" {{ request('has_invoice') === 'no' ? 'selected' : '' }}>No
-                                        Invoice</option>
-                                </select>
-                            </div>
-                            <div class="col-md-1">
                                 <label>&nbsp;</label>
                                 <div>
                                     <a href="{{ route('project_amers.index') }}"
                                         class="btn btn-secondary btn-block">Clear</a>
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label>&nbsp;</label>
                                 <div>
                                     <button type="submit" class="btn btn-primary btn-block">Filter</button>
@@ -156,7 +146,6 @@
                                     <th>PO Number</th>
                                     <th>Department</th>
                                     <th>Region</th>
-                                    <th>Brand</th>
                                     <th>Store</th>
                                     <th>User</th>
                                     <th>Date</th>
@@ -164,8 +153,6 @@
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>PO File</th>
-                                    <th>Has Invoice</th>
-                                    <th>Invoice Compeleted</th>
                                     @if (auth()->user()->can('edit_project') || auth()->user()->can('show_project') || auth()->user()->can('delete_project'))
                                         <th>Processes</th>
                                     @endif
@@ -179,7 +166,7 @@
                                         </td>
                                         <td>
                                             @can('show_project_amers')
-                                                <a href="{{ route('project_amers.show', $project->id) }}" target="_blank">
+                                                <a href="{{ route('project_amers.show', $project->id) }}">
                                                     {{ $project->po_num ?? __('general.not_found') }}
                                                 </a>
                                             @else
@@ -188,7 +175,6 @@
                                         </td>
                                         <td>{{ $project->dept ?? __('general.not_found') }}</td>
                                         <td>{{ $project->region ?? __('general.not_found') }}</td>
-                                        <td>{{ $project->store->brand->name ?? __('general.not_found') }}</td>
                                         <td>{{ $project->store->name ?? __('general.not_found') }}</td>
                                         <td>{{ $project->user->name ?? __('general.not_found') }}</td>
                                         <td>{{ $project->date
@@ -232,38 +218,6 @@
                                                 -
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($project->invoice)
-                                                <span class="badge badge-success">Yes</span>
-                                            @else
-                                                <span class="badge badge-secondary">No</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (
-                                                $project->invoice &&
-                                                    $project->invoice->status !== 'ready_of_invoicing' &&
-                                                    $project->invoice->invoice_number != null &&
-                                                    $project->invoice->date != null &&
-                                                    $project->invoice->payment_file != null)
-                                                <div class="small">
-                                                    <div><strong>{{ __('Invoice Number') }}:</strong>
-                                                        {{ $project->invoice->invoice_number }}</div>
-                                                    <div><strong>{{ __('Date') }}:</strong>
-                                                        {{ \Carbon\Carbon::parse($project->invoice->date)->format('Y-m-d') }}
-                                                    </div>
-                                                    <div>
-                                                        <strong>{{ __('Payment File') }}:</strong>
-                                                        <a href="{{ asset('storage/' . $project->invoice->payment_file) }}"
-                                                            target="_blank" class="btn btn-xs btn-outline-info">
-                                                            <i class="fa fa-download"></i> {{ __('Download') }}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <span class="badge badge-secondary">No</span>
-                                            @endif
-                                        </td>
 
 
                                         @if (auth()->user()->can('edit_project_amers') ||
@@ -298,13 +252,6 @@
                                                             <a class="dropdown-item"
                                                                 href="{{ route('project_amers.edit', $project->id) }}">
                                                                 <i class="text-primary fas fa-edit"></i>&nbsp;&nbsp;Edit
-                                                            </a>
-                                                            <a class="dropdown-item modal-effect" data-effect="effect-scale"
-                                                                data-toggle="modal"
-                                                                href="#statusPriorityModal-{{ $project->id }}"
-                                                                title="Update Status & Priority">
-                                                                <i class="text-success fas fa-sync-alt"></i>&nbsp;&nbsp;Update
-                                                                Status/Priority
                                                             </a>
                                                         @endcan
                                                         @can('delete_project_amers')
@@ -348,71 +295,6 @@
                                                         </button>
                                                         <button type="submit" class="btn btn-danger">
                                                             Delete
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Update Status & Priority Modal -->
-                                    <div class="modal" id="statusPriorityModal-{{ $project->id }}">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h6 class="modal-title">Update Status & Priority</h6>
-                                                    <button aria-label="Close" class="close" data-dismiss="modal"
-                                                        type="button">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form
-                                                    action="{{ route('project_amers.update_status_priority', $project->id) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Status</label>
-                                                            <select class="form-control" name="request_status" required>
-                                                                <option value="new_order"
-                                                                    {{ $project->request_status === 'new_order' ? 'selected' : '' }}>
-                                                                    New Order</option>
-                                                                <option value="under_working"
-                                                                    {{ $project->request_status === 'under_working' ? 'selected' : '' }}>
-                                                                    Under Working</option>
-                                                                <option value="completed"
-                                                                    {{ $project->request_status === 'completed' ? 'selected' : '' }}>
-                                                                    Completed</option>
-                                                                <option value="on_hold"
-                                                                    {{ $project->request_status === 'on_hold' ? 'selected' : '' }}>
-                                                                    On Hold</option>
-                                                                <option value="cancelled"
-                                                                    {{ $project->request_status === 'cancelled' ? 'selected' : '' }}>
-                                                                    Cancelled</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group mt-3">
-                                                            <label>Priority</label>
-                                                            <select class="form-control" name="priority" required>
-                                                                <option value="high"
-                                                                    {{ $project->priority === 'high' ? 'selected' : '' }}>
-                                                                    High</option>
-                                                                <option value="medium"
-                                                                    {{ $project->priority === 'medium' ? 'selected' : '' }}>
-                                                                    Medium</option>
-                                                                <option value="low"
-                                                                    {{ $project->priority === 'low' ? 'selected' : '' }}>
-                                                                    Low</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">
-                                                            Cancel
-                                                        </button>
-                                                        <button type="submit" class="btn btn-primary">
-                                                            Update
                                                         </button>
                                                     </div>
                                                 </form>

@@ -35,8 +35,8 @@
                         @csrf
                         <div class="form-group">
                             <label>Americana Project</label>
-                            <select name="project_amer_id" id="project_amer_id" disabled class="form-control select2"
-                                required>
+                            <input type="hidden" name="project_amer_id" value="{{ $invoice->project_amer_id }}">
+                            <select id="project_amer_id" disabled class="form-control select2">
                                 @foreach ($projects as $p)
                                     <option value="{{ $p->id }}" data-cost="{{ $p->amount }}"
                                         {{ old('project_amer_id', $invoice->project_amer_id) == $p->id ? 'selected' : '' }}>
@@ -196,7 +196,7 @@
                     if (!$(this).next('.invalid-feedback').length) {
                         $(this).after(
                             '<div class="invalid-feedback">Amount cannot exceed total project amount</div>'
-                            );
+                        );
                     }
                 } else {
                     $(this).removeClass('is-invalid');

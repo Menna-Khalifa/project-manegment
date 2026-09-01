@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
-use App\Models\InvoiceAmer;
 use App\Models\ProjectAmer;
 use App\Models\ProjectAmerItem;
 use App\Models\ProjectCapacity;
@@ -37,7 +36,7 @@ class ProjectAmerController extends Controller
     {
         // dd($request->all());
         try {
-            $query = ProjectAmer::with(['user', 'store', 'invoice']);
+            $query = ProjectAmer::with(['user', 'store']);
 
             // Filter by status
             if ($request->filled('request_status')) {
@@ -67,15 +66,6 @@ class ProjectAmerController extends Controller
             // Filter by PO number
             if ($request->filled('po_num')) {
                 $query->where('po_num', 'like', '%' . $request->po_num . '%');
-            }
-
-            // Filter by invoice existence
-            if ($request->filled('has_invoice')) {
-                if ($request->has_invoice === 'yes') {
-                    $query->has('invoice');
-                } elseif ($request->has_invoice === 'no') {
-                    $query->doesntHave('invoice');
-                }
             }
 
             // Sort
@@ -143,15 +133,6 @@ class ProjectAmerController extends Controller
 
 
             $project_amer = ProjectAmer::create($validatedData);
-
-            // Auto-create invoice with status ready_of_invoicing
-            InvoiceAmer::create([
-                'project_amer_id' => $project_amer->id,
-                'amount'          => $project_amer->amount,
-                'status'          => 'ready_of_invoicing',
-                'created_by'      => auth()->id(),
-                // invoice_number, date, payment_file left null intentionally
-            ]);
 
             $maintenanceItems = $request->input('items_maintenance', []);
             foreach ($maintenanceItems as $item) {
@@ -269,18 +250,6 @@ class ProjectAmerController extends Controller
             }
 
             $project_amer->update($validatedData);
-
-            // Sync invoice amount or create invoice if not exists
-            if ($project_amer->invoice) {
-                $project_amer->invoice->update(['amount' => $project_amer->amount]);
-            } else {
-                InvoiceAmer::create([
-                    'project_amer_id' => $project_amer->id,
-                    'amount'          => $project_amer->amount,
-                    'status'          => 'ready_of_invoicing',
-                    'created_by'      => auth()->id(),
-                ]);
-            }
 
             $project_amer->items()->delete();
 
@@ -446,29 +415,4 @@ class ProjectAmerController extends Controller
             return response()->json(['success' => false, 'message' => 'Internal server error'], 500);
         }
     }
-
-    /**
-     * Update only status and priority via modal
-     */
-    public function updateStatusPriority(Request $request, ProjectAmer $project_amer)
-    {
-        try {
-            $validatedData = $request->validate([
-                'request_status' => 'required|in:new_order,cancelled,under_working,completed,on_hold',
-                'priority' => 'required|in:high,medium,low',
-            ]);
-
-            $project_amer->update($validatedData);
-
-            notify('Status and Priority updated successfully.', 'success');
-            return back();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->errors())->withInput();
-        } catch (\Exception $e) {
-            Log::error('Error updating project status and priority: ' . $e->getMessage());
-            notify('An error occurred while updating status and priority.', 'error');
-            return back();
-        }
-    }
 }
-

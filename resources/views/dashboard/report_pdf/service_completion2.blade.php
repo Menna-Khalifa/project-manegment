@@ -153,8 +153,7 @@
 
         <table class="info-table">
             <tr>
-                <td colspan="4" class="table-header">
-                    {{ $project_amer->dept == 'other' ? $project_amer->store->brand->name : 'AMERICANA' }}</td>
+                <td colspan="4" class="table-header">AMERICANA</td>
             </tr>
             <tr>
                 <td class="label-cell">Date</td>

@@ -19,6 +19,52 @@
     <!-- row opened -->
     <div class="row row-sm">
         <div class="col-xl-12">
+            <!-- Filter Card -->
+            <div class="card mb-3">
+                <div class="card-header pb-0">
+                    <h5>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{ route('stores.index') }}">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Search</label>
+                                <input type="text" class="form-control" name="search" value="{{ request('search') }}"
+                                    placeholder="Name, Email, Phone, UUID">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Brand</label>
+                                <select class="form-control" name="brand_id">
+                                    <option value="">All Brands</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}"
+                                            {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Country</label>
+                                <input type="text" class="form-control" name="country" value="{{ request('country') }}"
+                                    placeholder="Country">
+                            </div>
+                            <div class="col-md-2">
+                                <label>City</label>
+                                <input type="text" class="form-control" name="city" value="{{ request('city') }}"
+                                    placeholder="City">
+                            </div>
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary btn-block mr-1">Filter</button>
+                                    <a href="{{ route('stores.index') }}" class="btn btn-secondary btn-block">Clear</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="col-sm-1 col-md-2">

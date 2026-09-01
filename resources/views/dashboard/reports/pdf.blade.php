@@ -380,7 +380,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ public_asset('dashboard/assets/img/brand/toggle-logo.png') }}" alt="Logo" class="logo">
+            <img src="{{ public_path('dashboard/assets/img/brand/toggle-logo.png') }}" alt="Logo" class="logo">
         </div>
         
         <div class="header-type">

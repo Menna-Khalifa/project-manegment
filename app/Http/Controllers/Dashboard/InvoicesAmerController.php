@@ -141,7 +141,7 @@ class InvoicesAmerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            notify($validator, 'error');
+            notify($validator->errors()->first(), 'error');
 
             return redirect()->back()
                 ->withErrors($validator)
